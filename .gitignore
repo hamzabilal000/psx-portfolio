@@ -1,0 +1,25 @@
+node_modules/
+.env
+*.env
+dist/
+build/
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# Uploads
+uploads/
