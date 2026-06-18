@@ -22,20 +22,27 @@ async function register(req, res) {
         }
 
         let hashedPassword = await bcrypt.hash(password, 12)
-        let verificationToken = generateToken()
-        let verificationExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
         let user = await User.insertOne({
             name, email, password: hashedPassword,
-            emailVerificationToken: verificationToken,
-            emailVerificationExpiry: verificationExpiry
+            isVerified: true  // auto-verify (email disabled for dev)
         })
 
-        await sendVerificationEmail(email, name, verificationToken)
+        // Try sending email but don't fail if it errors
+        try {
+            let verificationToken = generateToken()
+            await User.findByIdAndUpdate(user._id, {
+                emailVerificationToken: verificationToken,
+                emailVerificationExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000)
+            })
+            await sendVerificationEmail(email, name, verificationToken)
+        } catch (emailErr) {
+            console.log("[Email] Skipped:", emailErr.message)
+        }
 
         res.status(201).json({
             success: true,
-            data: { message: "Registration successful. Please verify your email." }
+            data: { message: "Registration successful. You can now login." }
         })
     } catch (error) {
         console.log(error)
