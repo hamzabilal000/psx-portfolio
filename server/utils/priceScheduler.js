@@ -44,7 +44,7 @@ async function checkAlerts() {
 
             if (triggered) {
                 await Alert.findByIdAndUpdate(alert._id, { isActive: false, triggeredAt: new Date() })
-                await Notification.insertOne({
+                await Notification.create({
                     user: alert.user,
                     type: 'PRICE_ALERT',
                     title: `Alert Triggered: ${alert.symbol}`,

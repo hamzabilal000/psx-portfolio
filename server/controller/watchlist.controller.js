@@ -36,7 +36,7 @@ async function addToWatchlist(req, res) {
         let stock = await Stock.findOne({ symbol: symbol.toUpperCase() })
         if (!stock) return res.status(404).json({ success: false, error: "Stock not found" })
 
-        let item = await Watchlist.insertOne({ user: req.user.id, symbol: symbol.toUpperCase() })
+        let item = await Watchlist.create({ user: req.user.id, symbol: symbol.toUpperCase() })
         res.status(201).json({ success: true, data: item })
     } catch (error) {
         console.log(error)

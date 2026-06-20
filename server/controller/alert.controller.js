@@ -22,7 +22,7 @@ async function createAlert(req, res) {
         let stock = await Stock.findOne({ symbol: symbol.toUpperCase() })
         if (!stock) return res.status(404).json({ success: false, error: "Stock not found" })
 
-        let alert = await Alert.insertOne({
+        let alert = await Alert.create({
             user: req.user.id,
             symbol: symbol.toUpperCase(),
             condition,

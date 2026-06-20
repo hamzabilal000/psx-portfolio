@@ -1,47 +1,110 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { useTheme } from '../context/ThemeContext'
 axios.defaults.withCredentials = true
 
 function ForgotPassword() {
-  let emailRef = useRef()
-  let [msg, setMsg] = useState('')
-  let [error, setError] = useState('')
-  let [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [msg, setMsg] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { theme, toggle } = useTheme()
 
-  async function handleSubmit() {
-    setError(''); setMsg(''); setLoading(true)
+  async function handleSubmit(e) {
+    e?.preventDefault()
+    setError(''); setMsg(''); setEmailError('')
+
+    if (!email.trim()) return setEmailError('Email is required')
+    if (!/\S+@\S+\.\S+/.test(email)) return setEmailError('Enter a valid email address')
+
+    setLoading(true)
     try {
-      let res = await axios.post("http://localhost:8080/auth/forgot-password", { email: emailRef.current.value })
-      if (res.data.success == true) setMsg(res.data.data.message)
-      else setError(res.data.error)
-    } catch (e) {
-      setError('Request failed')
+      const res = await axios.post('http://localhost:8080/auth/forgot-password', { email: email.trim() })
+      if (res.data.success === true) setMsg(res.data.data.message)
+      else setError(res.data.error || 'Request failed')
+    } catch {
+      setError('Request failed. Please try again.')
     }
     setLoading(false)
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1a1f2e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: '400px' }}>
-        <div className="card">
-          <h2 style={{ color: '#e2e8f0', marginTop: 0, marginBottom: '8px' }}>Forgot Password</h2>
-          <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '24px' }}>Enter your email and we'll send a reset link.</p>
+    <div style={{
+      minHeight: '100vh', background: 'var(--bg)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px', position: 'relative',      overflow: 'hidden'
+    }}>
+      {/* ── Floating Theme Toggle ── */}
+      <button
+        onClick={toggle}
+        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        style={{
+          position: 'fixed', top: '20px', right: '20px',
+          background: 'var(--bg-card)', border: '1px solid var(--border)',
+          borderRadius: '10px', padding: '8px 14px',
+          cursor: 'pointer', fontSize: '13px', fontWeight: 600,
+          color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '6px',
+          zIndex: 999,
+        }}
+      >
+        {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+      </button>
+      <div style={{
+        position: 'absolute', top: '-20%', right: '-10%', width: '400px', height: '400px',
+        borderRadius: '50%', background: 'radial-gradient(circle, rgba(185,255,102,0.05) 0%, transparent 70%)',
+        pointerEvents: 'none'
+      }} />
 
-          {error && <div style={{ background: '#7f1d1d', color: '#fca5a5', padding: '10px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
-          {msg && <div style={{ background: '#14532d', color: '#86efac', padding: '10px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{msg}</div>}
-
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '6px' }}>Email</label>
-            <input ref={emailRef} type="email" placeholder="you@example.com" className="input-field" />
+      <div style={{ width: '100%', maxWidth: '420px', position: 'relative', zIndex: 1 }} className="animate-in">
+        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            width: '56px', height: '56px', borderRadius: '14px',
+            background: 'var(--lime)', marginBottom: '16px',
+            fontSize: '24px', boxShadow: '0 8px 32px rgba(185,255,102,0.25)'
+          }}>
+            🔑
           </div>
+          <h1 style={{ fontSize: '26px', fontWeight: 700, color: 'var(--white)', margin: 0 }}>
+            Reset Password
+          </h1>
+          <p style={{ color: 'var(--muted)', marginTop: '8px', fontSize: '14px' }}>
+            We'll send a reset link to your inbox
+          </p>
+        </div>
 
-          <button onClick={handleSubmit} disabled={loading} className="btn-primary" style={{ width: '100%' }}>
-            {loading ? 'Sending...' : 'Send Reset Link'}
-          </button>
+        <div style={{
+          background: 'var(--bg-card)', border: '1px solid var(--border)',
+          borderRadius: '20px', padding: '32px'
+        }}>
+          <form onSubmit={handleSubmit} noValidate>
+            {error && <div className="alert-error" style={{ marginBottom: '18px' }}><span>⚠</span> {error}</div>}
+            {msg   && <div className="alert-success" style={{ marginBottom: '18px' }}><span>✓</span> {msg}</div>}
 
-          <p style={{ textAlign: 'center', color: '#64748b', marginTop: '20px', fontSize: '14px' }}>
-            <Link to="/" style={{ color: '#16a34a', textDecoration: 'none' }}>Back to Login</Link>
+            <div style={{ marginBottom: '24px' }}>
+              <label className="field-label">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => { setEmail(e.target.value); setEmailError('') }}
+                placeholder="you@example.com"
+                className={`input-field${emailError ? ' error' : ''}`}
+                autoComplete="email"
+              />
+              {emailError && <p style={{ color: 'var(--danger)', fontSize: '12px', marginTop: '6px' }}>⚠ {emailError}</p>}
+            </div>
+
+            <button type="submit" disabled={loading || !!msg} className="btn-primary" style={{ width: '100%', padding: '13px' }}>
+              {loading ? 'Sending...' : 'Send Reset Link →'}
+            </button>
+          </form>
+
+          <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: '24px', fontSize: '14px' }}>
+            <Link to="/" style={{ color: 'var(--lime)', textDecoration: 'none', fontWeight: 600 }}>
+              ← Back to Sign In
+            </Link>
           </p>
         </div>
       </div>

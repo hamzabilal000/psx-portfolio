@@ -80,6 +80,38 @@
     "weaknesses": ["Political risk","Government interference","High NPLs"]
   },
   {
+    "symbol": "BAHL", "name": "Bank Al-Habib Limited", "sector": "Banking", "industry": "Commercial Banking",
+    "yahooTicker": "BAHL.KA", "marketCapBnPkr": 175,
+    "avgPeRatio": 7.5, "avgPbRatio": 1.7, "avgDividendYield": 7.8, "payoutRatio": 58,
+    "avgRoe": 20.0, "avgRoa": 1.7, "beta": 0.72, "volatilityScore": 33,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 19.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement","Wealth Building"], "minHorizonYears": 1,
+    "dividendPreference": "High Dividend",
+    "description": "Conservative family-managed bank with exceptional asset quality and high dividends. Chinoy family flagship.",
+    "strengths": ["Best-in-class asset quality","High dividends","Conservative management","Low NPLs"],
+    "weaknesses": ["Slower growth vs peers","Limited digital transformation"]
+  },
+  {
+    "symbol": "FAYSAL", "name": "Faysal Bank Limited", "sector": "Banking", "industry": "Islamic Banking",
+    "yahooTicker": "FAYSAL.KA", "marketCapBnPkr": 110,
+    "avgPeRatio": 6.0, "avgDividendYield": 5.2, "avgRoe": 15.0, "beta": 0.95, "volatilityScore": 45,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 14.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Passive Income"], "dividendPreference": "Balanced",
+    "description": "Successfully converting to full Islamic banking. Growing branch network and digital presence.",
+    "strengths": ["Islamic banking conversion","Growing deposits","Regional expansion"],
+    "weaknesses": ["Transition costs","Medium NPLs"]
+  },
+  {
+    "symbol": "AKBL", "name": "Askari Bank Limited", "sector": "Banking", "industry": "Commercial Banking",
+    "yahooTicker": "AKBL.KA", "marketCapBnPkr": 95,
+    "avgPeRatio": 6.8, "avgDividendYield": 7.2, "avgRoe": 18.0, "beta": 0.85, "volatilityScore": 38,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 17.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement"], "dividendPreference": "High Dividend",
+    "description": "Army Welfare Trust-backed bank. Stable operations, consistent dividends, military client base.",
+    "strengths": ["Army Welfare Trust backing","Stable income","Good dividends","Loyal customer base"],
+    "weaknesses": ["Limited private sector innovation","Bureaucratic culture"]
+  },
+  {
     "symbol": "LUCK", "name": "Lucky Cement Limited", "sector": "Cement", "industry": "Construction Materials",
     "yahooTicker": "LUCK.KA", "marketCapBnPkr": 280, "outstandingSharesMn": 323, "freeFloatPct": 45,
     "avgPeRatio": 11.5, "avgPbRatio": 2.4, "avgDividendYield": 3.5, "payoutRatio": 35,
@@ -134,6 +166,39 @@
     "weaknesses": ["Cyclical sector","Competition from newer plants"]
   },
   {
+    "symbol": "KOHC", "name": "Kohat Cement Company", "sector": "Cement", "industry": "Construction Materials",
+    "yahooTicker": "KOHC.KA",
+    "avgPeRatio": 9.5, "avgDividendYield": 6.0, "avgRoe": 18.0, "beta": 1.10, "volatilityScore": 52,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 19.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Passive Income"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "KPK-based cement manufacturer serving North Pakistan. High dividends for the cement sector.",
+    "strengths": ["Strong north Pakistan presence","Above-sector dividends","Modern plant"],
+    "weaknesses": ["Geo-political risk in KPK","Smaller market share"]
+  },
+  {
+    "symbol": "PIOC", "name": "Pioneer Cement", "sector": "Cement", "industry": "Construction Materials",
+    "yahooTicker": "PIOC.KA",
+    "avgPeRatio": 9.0, "avgDividendYield": 5.5, "avgRoe": 16.0, "beta": 1.12, "volatilityScore": 55,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 18.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Well-managed mid-cap cement producer with consistent performance.",
+    "strengths": ["Consistent earnings","Good management","Reasonable valuation"],
+    "weaknesses": ["Cyclical sector","Energy cost exposure"]
+  },
+  {
+    "symbol": "ACPL", "name": "Attock Cement Pakistan", "sector": "Cement", "industry": "Construction Materials",
+    "yahooTicker": "ACPL.KA",
+    "avgPeRatio": 10.5, "avgDividendYield": 5.0, "avgRoe": 18.0, "beta": 1.00, "volatilityScore": 48,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 19.5, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Passive Income"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Attock Group cement subsidiary. Relatively lower leverage than peers and solid management.",
+    "strengths": ["Attock group backing","Lower debt","Good management"],
+    "weaknesses": ["Smaller capacity","Cyclical sector"]
+  },
+  {
     "symbol": "FFC", "name": "Fauji Fertilizer Company", "sector": "Fertilizer", "industry": "Agrochemicals",
     "yahooTicker": "FFC.KA", "marketCapBnPkr": 180, "outstandingSharesMn": 1272,
     "avgPeRatio": 7.5, "avgDividendYield": 11.5, "payoutRatio": 85,
@@ -165,6 +230,16 @@
     "description": "Multi-nutrient fertilizer producer with strong dividend history.",
     "strengths": ["Multi-nutrient product mix","Strong dividends"],
     "weaknesses": ["Feedstock price risk","Agricultural demand cyclicality"]
+  },
+  {
+    "symbol": "FFBL", "name": "Fauji Fertilizer Bin Qasim", "sector": "Fertilizer", "industry": "Agrochemicals",
+    "yahooTicker": "FFBL.KA",
+    "avgPeRatio": 8.0, "avgDividendYield": 7.5, "avgRoe": 18.0, "beta": 0.85, "volatilityScore": 42,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 18.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement"], "dividendPreference": "High Dividend",
+    "description": "NP fertilizer producer. Part of Fauji group with phosphatic fertilizer specialization.",
+    "strengths": ["Fauji group support","Niche NP fertilizer","Steady dividends"],
+    "weaknesses": ["Smaller scale","Feedstock import dependency"]
   },
   {
     "symbol": "ENGRO", "name": "Engro Corporation Limited", "sector": "Fertilizer", "industry": "Diversified Industrial",
@@ -212,6 +287,17 @@
     "weaknesses": ["Small scale","Client concentration risk"]
   },
   {
+    "symbol": "AVN", "name": "Avanceon Limited", "sector": "Technology", "industry": "Industrial Automation",
+    "yahooTicker": "AVN.KA",
+    "avgPeRatio": 20.0, "avgDividendYield": 1.5, "avgRoe": 22.0, "beta": 1.25, "volatilityScore": 65,
+    "riskLevel": "High", "avgAnnualReturn5yr": 30.0, "suitableRisk": ["High"],
+    "suitableGoals": ["Capital Growth"], "minHorizonYears": 3,
+    "dividendPreference": "Growth",
+    "description": "Industrial automation and control systems company. Expanding into regional markets.",
+    "strengths": ["Niche industrial tech","Export growth","Strong order book"],
+    "weaknesses": ["Small cap","Execution risk","Volatile earnings"]
+  },
+  {
     "symbol": "OGDC", "name": "Oil & Gas Development Company", "sector": "Oil & Gas", "industry": "Exploration & Production",
     "yahooTicker": "OGDC.KA", "marketCapBnPkr": 520, "outstandingSharesMn": 4301,
     "avgPeRatio": 6.8, "avgDividendYield": 7.5, "avgRoe": 14.0, "beta": 0.85, "volatilityScore": 42,
@@ -253,6 +339,26 @@
     "weaknesses": ["Smaller scale than OGDC","Concentration risk"]
   },
   {
+    "symbol": "APL", "name": "Attock Petroleum Limited", "sector": "Oil & Gas", "industry": "Oil Marketing",
+    "yahooTicker": "APL.KA",
+    "avgPeRatio": 8.0, "avgDividendYield": 8.5, "avgRoe": 20.0, "beta": 0.90, "volatilityScore": 43,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 17.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Wealth Building"], "dividendPreference": "High Dividend",
+    "description": "Private oil marketing company. Higher margins and better governance than PSO.",
+    "strengths": ["Private management","Higher margins","Strong dividends","Lower circular debt"],
+    "weaknesses": ["Smaller market share than PSO","Oil price dependency"]
+  },
+  {
+    "symbol": "SNGP", "name": "Sui Northern Gas Pipelines", "sector": "Oil & Gas", "industry": "Gas Distribution",
+    "yahooTicker": "SNGP.KA",
+    "avgPeRatio": 7.0, "avgDividendYield": 5.5, "avgRoe": 14.0, "beta": 0.80, "volatilityScore": 38,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 13.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement"], "dividendPreference": "Balanced",
+    "description": "North Pakistan gas distributor. Quasi-utility with regulated returns.",
+    "strengths": ["Monopoly gas distribution","Regulated returns","Utility-like stability"],
+    "weaknesses": ["Gas shortage risk","Circular debt","Government tariff control"]
+  },
+  {
     "symbol": "HUBC", "name": "Hub Power Company Limited", "sector": "Power", "industry": "Independent Power Producer",
     "yahooTicker": "HUBC.KA",
     "avgPeRatio": 8.0, "avgDividendYield": 8.5, "avgRoe": 18.0, "beta": 0.70, "volatilityScore": 33,
@@ -271,6 +377,16 @@
     "description": "Stable power producer with highest dividend yield in the power sector.",
     "strengths": ["Highest dividend in power sector","Very low beta","Stable PPAs"],
     "weaknesses": ["Limited growth","Aging power plants"]
+  },
+  {
+    "symbol": "NCPL", "name": "Nishat Chunian Power Limited", "sector": "Power", "industry": "Independent Power Producer",
+    "yahooTicker": "NCPL.KA",
+    "avgPeRatio": 7.5, "avgDividendYield": 9.0, "avgRoe": 16.0, "beta": 0.68, "volatilityScore": 32,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 15.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement"], "dividendPreference": "High Dividend",
+    "description": "Nishat Group IPP with very stable PPA-backed income and high dividend yield.",
+    "strengths": ["Nishat group backing","High dividend","Low beta","Stable PPAs"],
+    "weaknesses": ["Circular debt exposure","Limited growth beyond capacity"]
   },
   {
     "symbol": "KEL", "name": "K-Electric Limited", "sector": "Power", "industry": "Integrated Electric Utility",
@@ -303,6 +419,37 @@
     "weaknesses": ["High PE","Price controls","Limited dividend"]
   },
   {
+    "symbol": "GLAXO", "name": "GlaxoSmithKline Pakistan", "sector": "Pharmaceutical", "industry": "Pharmaceuticals",
+    "yahooTicker": "GLAXO.KA",
+    "avgPeRatio": 24.0, "avgDividendYield": 3.5, "avgRoe": 30.0, "beta": 0.65, "volatilityScore": 28,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 17.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Wealth Building","Retirement"], "dividendPreference": "Balanced",
+    "description": "Subsidiary of global GSK. Premium branded medicines with strong MNC parent backing.",
+    "strengths": ["MNC parent","Strong brands","Defensive sector","Low volatility"],
+    "weaknesses": ["High valuation","Drug price controls","Limited dividend growth"]
+  },
+  {
+    "symbol": "HINOON", "name": "Highnoon Laboratories", "sector": "Pharmaceutical", "industry": "Pharmaceuticals",
+    "yahooTicker": "HINOON.KA",
+    "avgPeRatio": 15.0, "avgDividendYield": 3.8, "avgRoe": 24.0, "beta": 0.80, "volatilityScore": 38,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 19.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building"], "dividendPreference": "Balanced",
+    "description": "Growing generics pharma company with good pipeline and reasonable valuations.",
+    "strengths": ["Growing generic pipeline","Reasonable PE","Export ambitions"],
+    "weaknesses": ["Price control exposure","Competition from imports"]
+  },
+  {
+    "symbol": "SHEZ", "name": "Shifa International Hospitals", "sector": "Healthcare", "industry": "Hospital & Healthcare Services",
+    "yahooTicker": "SHEZ.KA",
+    "avgPeRatio": 22.0, "avgDividendYield": 2.0, "avgRoe": 15.0, "beta": 0.75, "volatilityScore": 35,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 18.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Premium private hospital network in Islamabad. Healthcare demand is secular and defensive.",
+    "strengths": ["Defensive healthcare sector","Growing capacity","Premium brand"],
+    "weaknesses": ["High capex needs","Limited geography","Regulatory risk"]
+  },
+  {
     "symbol": "NML", "name": "Nishat Mills Limited", "sector": "Textile", "industry": "Textile Manufacturing",
     "yahooTicker": "NML.KA",
     "avgPeRatio": 8.5, "avgDividendYield": 5.5, "avgRoe": 14.0, "beta": 1.05, "volatilityScore": 52,
@@ -323,7 +470,229 @@
     "weaknesses": ["Regulatory exposure","Energy cost sensitivity"]
   },
   {
-    "symbol": "PSMC", "name": "Pak Suzuki Motor Company", "sector": "Automobile", "industry": "Automobile Assembly",
+    "symbol": "GATM", "name": "Gul Ahmed Textile Mills", "sector": "Textile", "industry": "Textile Manufacturing",
+    "yahooTicker": "GATM.KA",
+    "avgPeRatio": 7.5, "avgDividendYield": 6.5, "avgRoe": 18.0, "beta": 1.05, "volatilityScore": 50,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 16.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Passive Income"], "dividendPreference": "Balanced",
+    "description": "Large home textile exporter. Strong brand 'Ideas by Gul Ahmed'. USD revenue exposure.",
+    "strengths": ["Strong retail brand","Home textiles export","USD revenue"],
+    "weaknesses": ["Cotton price risk","Global demand cycles","High energy costs"]
+  },
+  {
+    "symbol": "KTML", "name": "Kohinoor Textile Mills", "sector": "Textile", "industry": "Textile Manufacturing",
+    "yahooTicker": "KTML.KA",
+    "avgPeRatio": 7.0, "avgDividendYield": 5.8, "avgRoe": 15.0, "beta": 1.10, "volatilityScore": 53,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 14.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building"], "dividendPreference": "Balanced",
+    "description": "Diversified textile company with spinning, weaving and garment operations.",
+    "strengths": ["Integrated operations","Export revenues"],
+    "weaknesses": ["High energy dependency","Working capital pressure"]
+  },
+  {
+    "symbol": "ILP", "name": "Ibrahim Fibres Limited", "sector": "Textile", "industry": "Polyester Fiber",
+    "yahooTicker": "ILP.KA",
+    "avgPeRatio": 9.5, "avgDividendYield": 4.0, "avgRoe": 12.0, "beta": 1.15, "volatilityScore": 58,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 13.0, "suitableRisk": ["Medium","High"],
+    "suitableGoals": ["Capital Growth"], "dividendPreference": "Balanced",
+    "description": "Polyester fiber manufacturer supplying the domestic textile industry.",
+    "strengths": ["Backward integration supply","Large capacity"],
+    "weaknesses": ["Crude oil price risk","Synthetic fiber demand cycles"]
+  },
+  {
+    "symbol": "NESTLE", "name": "Nestle Pakistan Limited", "sector": "FMCG", "industry": "Food & Beverages",
+    "yahooTicker": "NESTLE.KA",
+    "avgPeRatio": 35.0, "avgPbRatio": 18.0, "avgDividendYield": 2.5, "payoutRatio": 80,
+    "avgRoe": 45.0, "beta": 0.55, "volatilityScore": 25,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 16.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Wealth Building","Retirement"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Pakistan subsidiary of Nestle SA. Premium FMCG with Milo, Maggi, Nescafe. Ultra-defensive.",
+    "strengths": ["Global parent","Premium brands","Defensive demand","Very low beta"],
+    "weaknesses": ["Extremely high PE","Limited capital appreciation","Premium pricing risk"]
+  },
+  {
+    "symbol": "COLG", "name": "Colgate-Palmolive Pakistan", "sector": "FMCG", "industry": "Personal Products",
+    "yahooTicker": "COLG.KA",
+    "avgPeRatio": 28.0, "avgDividendYield": 3.0, "avgRoe": 38.0, "beta": 0.60, "volatilityScore": 27,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 15.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Wealth Building","Retirement"], "dividendPreference": "Balanced",
+    "description": "Pakistan subsidiary of Colgate-Palmolive. Oral care and personal products market leader.",
+    "strengths": ["Global parent","Market leadership","Defensive demand","Pricing power"],
+    "weaknesses": ["High PE","Limited local R&D","Royalty payments to parent"]
+  },
+  {
+    "symbol": "NATF", "name": "National Foods Limited", "sector": "FMCG", "industry": "Food & Beverages",
+    "yahooTicker": "NATF.KA",
+    "avgPeRatio": 20.0, "avgDividendYield": 3.5, "avgRoe": 25.0, "beta": 0.75, "volatilityScore": 35,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 19.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "dividendPreference": "Balanced",
+    "description": "Branded packaged foods leader. Spices, pickles, condiments. Growing export presence.",
+    "strengths": ["Market leader","Growing exports","Strong brand","Consistent growth"],
+    "weaknesses": ["Raw material inflation","Competition from imports"]
+  },
+  {
+    "symbol": "UPFL", "name": "Unilever Pakistan Foods", "sector": "FMCG", "industry": "Food & Beverages",
+    "yahooTicker": "UPFL.KA",
+    "avgPeRatio": 30.0, "avgDividendYield": 2.8, "avgRoe": 35.0, "beta": 0.62, "volatilityScore": 28,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 15.0, "suitableRisk": ["Low"],
+    "suitableGoals": ["Wealth Building","Retirement"], "dividendPreference": "Balanced",
+    "description": "Unilever Pakistan's food division. Lipton, Knorr, Blue Band. Ultra-defensive.",
+    "strengths": ["Unilever global parent","Iconic brands","Defensive demand"],
+    "weaknesses": ["Very high PE","High royalties to parent","Limited growth runway"]
+  },
+  {
+    "symbol": "UNITY", "name": "Unity Foods Limited", "sector": "FMCG", "industry": "Edible Oils & Flour",
+    "yahooTicker": "UNITY.KA",
+    "avgPeRatio": 9.5, "avgDividendYield": 5.0, "avgRoe": 15.0, "beta": 1.05, "volatilityScore": 50,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 16.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Passive Income"], "dividendPreference": "Balanced",
+    "description": "Edible oils, vanaspati and flour miller. Essential commodity producer with stable demand.",
+    "strengths": ["Essential commodities","Stable demand","Reasonable valuation"],
+    "weaknesses": ["Palm oil price risk","Thin margins","Commodity business"]
+  },
+  {
+    "symbol": "EFU", "name": "EFU General Insurance", "sector": "Insurance", "industry": "General Insurance",
+    "yahooTicker": "EFU.KA",
+    "avgPeRatio": 12.0, "avgDividendYield": 5.5, "avgRoe": 18.0, "beta": 0.70, "volatilityScore": 33,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 17.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement","Wealth Building"], "dividendPreference": "High Dividend",
+    "description": "Pakistan's largest general insurance company. Market leader with strong underwriting.",
+    "strengths": ["Market leader","Strong underwriting","Low beta","Good dividends"],
+    "weaknesses": ["Catastrophe risk","Regulatory changes","Insurance penetration limits"]
+  },
+  {
+    "symbol": "IGIHL", "name": "IGI Holdings Limited", "sector": "Insurance", "industry": "Diversified Insurance",
+    "yahooTicker": "IGIHL.KA",
+    "avgPeRatio": 13.5, "avgDividendYield": 4.0, "avgRoe": 15.0, "beta": 0.85, "volatilityScore": 40,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 16.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building"], "dividendPreference": "Balanced",
+    "description": "Diversified insurance holding company with life and general insurance operations.",
+    "strengths": ["Diversified insurance lines","Growing life insurance","Holding company upside"],
+    "weaknesses": ["Holding discount","Competitive market"]
+  },
+  {
+    "symbol": "JLICL", "name": "Jubilee Life Insurance", "sector": "Insurance", "industry": "Life Insurance",
+    "yahooTicker": "JLICL.KA",
+    "avgPeRatio": 15.0, "avgDividendYield": 3.5, "avgRoe": 20.0, "beta": 0.80, "volatilityScore": 38,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 18.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Leading life insurer. Benefits from growing awareness and rising middle class demand.",
+    "strengths": ["Life insurance growth story","Rising middle class","Good management"],
+    "weaknesses": ["Low insurance penetration growth","Regulatory changes"]
+  },
+  {
+    "symbol": "AICL", "name": "Adamjee Insurance", "sector": "Insurance", "industry": "General Insurance",
+    "yahooTicker": "AICL.KA",
+    "avgPeRatio": 11.0, "avgDividendYield": 5.0, "avgRoe": 16.0, "beta": 0.75, "volatilityScore": 35,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 15.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement"], "dividendPreference": "High Dividend",
+    "description": "Adamjee Group insurance arm. General insurance with motor, marine, fire cover.",
+    "strengths": ["Adamjee group backing","Consistent dividends","Stable underwriting"],
+    "weaknesses": ["Competitive market","Claims inflation"]
+  },
+  {
+    "symbol": "ISL", "name": "International Steels Limited", "sector": "Steel", "industry": "Flat Steel",
+    "yahooTicker": "ISL.KA",
+    "avgPeRatio": 11.0, "avgDividendYield": 4.5, "avgRoe": 16.0, "beta": 1.20, "volatilityScore": 60,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 17.0, "suitableRisk": ["Medium","High"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Flat steel manufacturer. Galvanized and CRC steel for construction and appliances.",
+    "strengths": ["Strong industrial demand","Anti-dumping protection","Good margins"],
+    "weaknesses": ["Import HRC price risk","Construction sector cyclicality"]
+  },
+  {
+    "symbol": "MUGHAL", "name": "Mughal Iron & Steel Industries", "sector": "Steel", "industry": "Long Steel",
+    "yahooTicker": "MUGHAL.KA",
+    "avgPeRatio": 10.0, "avgDividendYield": 5.5, "avgRoe": 18.0, "beta": 1.25, "volatilityScore": 62,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 19.0, "suitableRisk": ["Medium","High"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Rebar and steel billet producer. Strong construction sector play.",
+    "strengths": ["Construction boom exposure","Good earnings growth","Scrap recycling"],
+    "weaknesses": ["Scrap price risk","Construction sector cycles","High capex"]
+  },
+  {
+    "symbol": "ASTL", "name": "Amreli Steels Limited", "sector": "Steel", "industry": "Long Steel",
+    "yahooTicker": "ASTL.KA",
+    "avgPeRatio": 9.5, "avgDividendYield": 4.0, "avgRoe": 14.0, "beta": 1.30, "volatilityScore": 65,
+    "riskLevel": "High", "avgAnnualReturn5yr": 15.0, "suitableRisk": ["High"],
+    "suitableGoals": ["Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Rebar producer serving the construction sector. Aggressive expansion strategy.",
+    "strengths": ["Capacity expansion","Construction demand"],
+    "weaknesses": ["High leverage","Scrap price volatility","Execution risk"]
+  },
+  {
+    "symbol": "ICI", "name": "ICI Pakistan Limited", "sector": "Chemicals", "industry": "Specialty Chemicals",
+    "yahooTicker": "ICI.KA",
+    "avgPeRatio": 18.0, "avgDividendYield": 4.0, "avgRoe": 22.0, "beta": 0.90, "volatilityScore": 43,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 19.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Paints (Dulux), polyester, soda ash and specialty chemicals. Diversified industrial company.",
+    "strengths": ["Dulux brand dominance","Diversified revenues","AkzoNobel global parent"],
+    "weaknesses": ["Raw material import exposure","Paint sector cyclicality"]
+  },
+  {
+    "symbol": "LOTPTA", "name": "Lotte Chemical Pakistan", "sector": "Chemicals", "industry": "Petrochemicals",
+    "yahooTicker": "LOTPTA.KA",
+    "avgPeRatio": 8.5, "avgDividendYield": 5.0, "avgRoe": 12.0, "beta": 1.10, "volatilityScore": 55,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 14.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "PTA producer for synthetic textiles. Lotte Chemical South Korea parent.",
+    "strengths": ["Lotte global parent","PTA supply chain position","Good scale"],
+    "weaknesses": ["Crude oil feedstock risk","Textile sector dependency","Cyclical margins"]
+  },
+  {
+    "symbol": "DCR", "name": "Dolmen City REIT", "sector": "Real Estate", "industry": "REIT",
+    "yahooTicker": "DCR.KA",
+    "avgPeRatio": 15.0, "avgDividendYield": 7.5, "avgRoe": 10.0, "beta": 0.50, "volatilityScore": 22,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 13.0, "suitableRisk": ["Low"],
+    "suitableGoals": ["Passive Income","Retirement"], "minHorizonYears": 1,
+    "dividendPreference": "High Dividend",
+    "description": "Pakistan's premier REIT. Dolmen City Karachi mall income. Inflation-protected rental income.",
+    "strengths": ["Lowest volatility on PSX","Inflation-hedged income","Mall monopoly","Mandatory dividend distribution"],
+    "weaknesses": ["E-commerce risk","Single asset concentration","Limited capital appreciation"]
+  },
+  {
+    "symbol": "PTCL", "name": "Pakistan Telecommunications Company", "sector": "Telecom", "industry": "Telecommunications",
+    "yahooTicker": "PTCL.KA",
+    "avgPeRatio": 9.0, "avgDividendYield": 5.5, "avgRoe": 8.0, "beta": 0.85, "volatilityScore": 40,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 11.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Passive Income"], "dividendPreference": "Balanced",
+    "description": "National telecom operator. Etisalat-backed with broadband and fixed-line dominance.",
+    "strengths": ["Etisalat backing","Broadband infrastructure","Government contracts"],
+    "weaknesses": ["Mobile competition","Slow revenue growth","Government ownership overhang"]
+  },
+  {
+    "symbol": "INDU", "name": "Indus Motor Company", "sector": "Automobile", "industry": "Auto Assembly",
+    "yahooTicker": "INDU.KA",
+    "avgPeRatio": 15.0, "avgPbRatio": 3.5, "avgDividendYield": 5.0, "payoutRatio": 75,
+    "avgRoe": 22.0, "beta": 1.20, "volatilityScore": 60,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 14.0, "suitableRisk": ["Medium","High"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Toyota assembler for Pakistan. Premium cars, Corolla, Hilux. Cyclical but reliable dividend.",
+    "strengths": ["Toyota brand","Premium segment","Good dividend history","Market leader"],
+    "weaknesses": ["Auto policy risk","Import ban cycles","High PE for cyclical","FX exposure"]
+  },
+  {
+    "symbol": "HCAR", "name": "Honda Atlas Cars Pakistan", "sector": "Automobile", "industry": "Auto Assembly",
+    "yahooTicker": "HCAR.KA",
+    "avgPeRatio": 12.5, "avgDividendYield": 4.5, "avgRoe": 18.0, "beta": 1.25, "volatilityScore": 62,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 12.0, "suitableRisk": ["Medium","High"],
+    "suitableGoals": ["Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Honda assembler. Civic and City segments. More volatile than Indus Motor.",
+    "strengths": ["Honda brand","Compact segment dominance","Strong resale value"],
+    "weaknesses": ["Auto policy cycles","Currency exposure","High inventory risk"]
+  },
+  {
+    "symbol": "PSMC", "name": "Pak Suzuki Motor Company", "sector": "Automobile", "industry": "Auto Assembly",
     "yahooTicker": "PSMC.KA",
     "avgPeRatio": 14.0, "avgDividendYield": 2.0, "avgRoe": 12.0, "beta": 1.25, "volatilityScore": 65,
     "riskLevel": "High", "avgAnnualReturn5yr": 12.0, "suitableRisk": ["High"],
@@ -331,5 +700,26 @@
     "description": "Suzuki's Pakistan assembly operations. High cyclicality tied to auto policy and imports.",
     "strengths": ["Suzuki brand","Local assembly","Entry-level market"],
     "weaknesses": ["Auto policy risk","Import restrictions","High cyclicality"]
+  },
+  {
+    "symbol": "PAEL", "name": "Pak Elektron Limited", "sector": "Consumer Electronics", "industry": "Home Appliances",
+    "yahooTicker": "PAEL.KA",
+    "avgPeRatio": 10.0, "avgDividendYield": 4.0, "avgRoe": 14.0, "beta": 1.15, "volatilityScore": 56,
+    "riskLevel": "Medium", "avgAnnualReturn5yr": 16.0, "suitableRisk": ["Medium"],
+    "suitableGoals": ["Wealth Building","Capital Growth"], "minHorizonYears": 2,
+    "dividendPreference": "Balanced",
+    "description": "Largest home appliance manufacturer. ACs, fridges, washing machines and transformers.",
+    "strengths": ["Largest local appliance brand","Power equipment side","Growing middle class"],
+    "weaknesses": ["Chinese import competition","Energy cost sensitivity","Import duty changes"]
+  },
+  {
+    "symbol": "PMPK", "name": "Philip Morris Pakistan", "sector": "Tobacco", "industry": "Tobacco",
+    "yahooTicker": "PMPK.KA",
+    "avgPeRatio": 14.0, "avgDividendYield": 6.0, "avgRoe": 30.0, "beta": 0.70, "volatilityScore": 33,
+    "riskLevel": "Low", "avgAnnualReturn5yr": 14.0, "suitableRisk": ["Low","Medium"],
+    "suitableGoals": ["Passive Income","Retirement"], "dividendPreference": "High Dividend",
+    "description": "Philip Morris International Pakistan subsidiary. Marlboro brand. Highly cash generative.",
+    "strengths": ["Global PMI parent","Pricing power","High margins","Strong dividends","Defensive"],
+    "weaknesses": ["Regulatory/sin stock risk","Illicit tobacco competition","Volume decline long-term"]
   }
 ]

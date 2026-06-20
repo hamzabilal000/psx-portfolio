@@ -7,37 +7,50 @@ const { generateOTP, generateToken } = require("../utils/generateOTP")
 const { sendVerificationEmail, sendPasswordResetEmail, sendOTPEmail } = require("../utils/sendEmail")
 
 async function register(req, res) {
+    let createdUser = null
     try {
         let { name, email, password } = req.body
+
+        // ── Validate all fields first — nothing is touched until all pass ──
         if (!name || !email || !password) {
             return res.status(400).json({ success: false, error: "All fields are required" })
+        }
+        if (name.trim().length < 2) {
+            return res.status(400).json({ success: false, error: "Name must be at least 2 characters" })
         }
         if (password.length < 8) {
             return res.status(400).json({ success: false, error: "Password must be at least 8 characters" })
         }
 
-        let existing = await User.findOne({ email })
+        const normalizedEmail = email.trim().toLowerCase()
+
+        // ── Check duplicate BEFORE creating anything ──
+        let existing = await User.findOne({ email: normalizedEmail })
         if (existing) {
-            return res.status(400).json({ success: false, error: "Email already registered", code: 11000 })
+            return res.status(400).json({ success: false, error: "This email is already registered", code: 11000 })
         }
 
         let hashedPassword = await bcrypt.hash(password, 12)
 
-        let user = await User.insertOne({
-            name, email, password: hashedPassword,
+        // ── Create user ──
+        createdUser = await User.create({
+            name: name.trim(),
+            email: normalizedEmail,
+            password: hashedPassword,
             isVerified: true  // auto-verify (email disabled for dev)
         })
 
-        // Try sending email but don't fail if it errors
+        // ── Try sending email — if it fails, roll back (delete user) ──
         try {
             let verificationToken = generateToken()
-            await User.findByIdAndUpdate(user._id, {
+            await User.findByIdAndUpdate(createdUser._id, {
                 emailVerificationToken: verificationToken,
                 emailVerificationExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000)
             })
-            await sendVerificationEmail(email, name, verificationToken)
+            await sendVerificationEmail(normalizedEmail, name.trim(), verificationToken)
         } catch (emailErr) {
-            console.log("[Email] Skipped:", emailErr.message)
+            console.log("[Email] Skipped (non-fatal):", emailErr.message)
+            // Email failure is non-fatal — user is still created & verified
         }
 
         res.status(201).json({
@@ -45,10 +58,23 @@ async function register(req, res) {
             data: { message: "Registration successful. You can now login." }
         })
     } catch (error) {
-        console.log(error)
-        res.json({ success: false, error: error.message, code: error.code })
+        console.log("[Register Error]", error)
+
+        // ── All-or-Nothing: if user was created but something else failed, delete it ──
+        if (createdUser?._id) {
+            try { await User.findByIdAndDelete(createdUser._id) } catch {}
+            console.log("[Register] Rolled back user creation due to error")
+        }
+
+        // Handle MongoDB duplicate key (race condition)
+        if (error.code === 11000) {
+            return res.status(400).json({ success: false, error: "This email is already registered", code: 11000 })
+        }
+
+        res.status(500).json({ success: false, error: "Registration failed. Please try again." })
     }
 }
+
 
 async function verifyEmail(req, res) {
     try {

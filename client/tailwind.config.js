@@ -3,11 +3,15 @@ export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Space Grotesk', 'Inter', 'sans-serif'],
+      },
       colors: {
-        primary: { DEFAULT: '#16a34a', light: '#22c55e', dark: '#15803d' },
-        surface: '#1a1f2e',
-        card: '#232938',
-        border: '#2d3347'
+        lime:    { DEFAULT: '#b9ff66', dark: '#8ecf3e' },
+        surface: '#0d0d0d',
+        card:    '#141414',
+        border:  '#222222',
+        muted:   '#666666',
       }
     }
   },

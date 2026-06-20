@@ -32,7 +32,7 @@ async function addTransaction(req, res) {
         }
 
         let totalAmount = quantity * price
-        let transaction = await Transaction.insertOne({
+        let transaction = await Transaction.create({
             user: req.user.id,
             symbol: symbol.toUpperCase(),
             type: type.toUpperCase(),

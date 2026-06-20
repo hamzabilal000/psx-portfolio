@@ -33,7 +33,7 @@ async function getAllUsers(req, res) {
 
 async function addStock(req, res) {
     try {
-        let stock = await Stock.insertOne(req.body)
+        let stock = await Stock.create(req.body)
         res.status(201).json({ success: true, data: stock })
     } catch (error) {
         console.log(error)

@@ -16,12 +16,18 @@ const { calculator_router } = require("./routes/calculator.route")
 const { recommendation_router } = require("./routes/recommendation.route")
 const { news_router } = require("./routes/news.route")
 const { admin_router } = require("./routes/admin.route")
+const { gemini_router } = require("./routes/gemini.route")
 const { startScheduler } = require("./utils/priceScheduler")
 
 let app = express()
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+    ],
     credentials: true
 }))
 app.use(express.json())
@@ -50,6 +56,7 @@ app.use('/calc', calculator_router)
 app.use('/ai', recommendation_router)
 app.use('/news', news_router)
 app.use('/admin', admin_router)
+app.use('/gemini', gemini_router)
 
 app.get('/health', (req, res) => res.json({ success: true, data: { status: 'ok', time: new Date() } }))
 

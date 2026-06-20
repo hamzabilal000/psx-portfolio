@@ -79,7 +79,7 @@ async function addHolding(req, res) {
         let portfolio = await Portfolio.findOne({ user: req.user.id })
 
         if (!portfolio) {
-            portfolio = await Portfolio.insertOne({ user: req.user.id, holdings: [] })
+            portfolio = await Portfolio.create({ user: req.user.id, holdings: [] })
         }
 
         let existingIdx = portfolio.holdings.findIndex(h => h.symbol === symbol.toUpperCase())
@@ -96,7 +96,7 @@ async function addHolding(req, res) {
 
         await portfolio.save()
 
-        await Transaction.insertOne({
+        await Transaction.create({
             user: req.user.id,
             symbol: symbol.toUpperCase(),
             type: 'BUY',
@@ -124,7 +124,7 @@ async function removeHolding(req, res) {
         let price = await StockPrice.findOne({ symbol: symbol.toUpperCase() })
         let sellPrice = price?.price || holding.avgBuyPrice
 
-        await Transaction.insertOne({
+        await Transaction.create({
             user: req.user.id,
             symbol: symbol.toUpperCase(),
             type: 'SELL',
