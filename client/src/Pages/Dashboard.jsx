@@ -58,7 +58,31 @@ function Dashboard() {
   }
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const _h = new Date().getHours()
-  const greeting = _h >= 5 && _h < 12 ? 'Good morning' : _h >= 12 && _h < 17 ? 'Good afternoon' : _h >= 17 && _h < 21 ? 'Good evening' : 'Good night'
+  const _seed = new Date().getDate() + new Date().getMonth()
+
+  const _greetings = {
+    dawn:      [ 'Rise and grind —',       'Early bird mode:',       'Up before the market —',   'Sunrise investor alert —' ],
+    morning:   [ 'Markets are live —',     'KSE-100 is ticking —',   'Alpha hunter mode: on —',  'Time to make moves —'     ],
+    midday:    [ 'Mid-session check-in —', 'Afternoon hustle —',     'Stay sharp —',             'Bulls & bears at war —'   ],
+    afternoon: [ 'Session in full swing —','Charts looking spicy —',  'Keep your eyes open —',   'Smart money is moving —'  ],
+    evening:   [ 'Markets closed for today —', 'Review & recharge —', 'Time to debrief —',      'Post-market mode —'       ],
+    night:     [ 'Night owl investor —',   'Research never sleeps —', 'Planning tomorrow? —',    'After-hours thinker —'    ],
+    latenight: [ 'Burning the midnight oil —', 'The charts wait for no one —', 'Hustle hours —', 'While others sleep —'    ],
+  }
+  const _subs = {
+    dawn:      [ "The early investor catches the best entry points.", "KSE-100 opens soon — are you ready?", "You're already ahead of 90% of investors.", "The market rewards the disciplined." ],
+    morning:   [ "Let's see what the market has for you today.", "Your portfolio is live and breathing.", "Opportunities don't wait — neither should you.", "Stay focused, stay profitable." ],
+    midday:    [ "How's the portfolio holding up?", "Volatility is just opportunity in disguise.", "Momentum traders are watching closely.", "Keep your thesis, ignore the noise." ],
+    afternoon: [ "Smart investors review before market close.", "The last hour is often the most decisive.", "Any moves to make before close?", "Discipline beats emotion — every time." ],
+    evening:   [ "Solid session. Time to reflect and plan.", "Review today's moves before tomorrow.", "Your next big win starts with tonight's research.", "The best investors never stop learning." ],
+    night:     [ "Great time to study the charts in peace.", "Futures are moving — stay informed.", "Plan your entries for tomorrow.", "Research tonight, profit tomorrow." ],
+    latenight: [ "The most disciplined investors do this right now.", "Quiet hours, clear mind — best time to think.", "Even Warren Buffett reads at night.", "Tomorrow's alpha is hidden in tonight's data." ],
+  }
+
+  const _period = _h >= 5 && _h < 7 ? 'dawn' : _h >= 7 && _h < 12 ? 'morning' : _h >= 12 && _h < 14 ? 'midday' : _h >= 14 && _h < 17 ? 'afternoon' : _h >= 17 && _h < 21 ? 'evening' : _h >= 21 && _h < 24 ? 'night' : 'latenight'
+  const _i = _seed % 4
+  const greeting = _greetings[_period][_i]
+  const greetingSub = _subs[_period][_i]
 
   useEffect(() => {
     async function load() {
@@ -96,11 +120,11 @@ function Dashboard() {
       {/* Header */}
       <div className="animate-in" style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <p style={{ color: 'var(--muted)', fontSize: '13px', marginBottom: '4px' }}>{greeting},</p>
+          <p style={{ color: 'var(--lime)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.04em', marginBottom: '4px', textTransform: 'uppercase' }}>{greeting}</p>
           <h1 style={{ fontSize: '26px', fontWeight: 700, color: 'var(--white)', margin: 0 }}>
             {user.name?.split(' ')[0] || 'Investor'} <span style={{ color: 'var(--lime)' }}>👋</span>
           </h1>
-          <p style={{ color: 'var(--muted)', marginTop: '4px', fontSize: '13px' }}>Here's your portfolio snapshot for today.</p>
+          <p style={{ color: 'var(--muted)', marginTop: '5px', fontSize: '13px' }}>{greetingSub}</p>
         </div>
         <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 16px', fontSize: '12px', color: 'var(--muted)' }}>
           {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
