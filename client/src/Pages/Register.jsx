@@ -9,6 +9,7 @@ function Register() {
   const [serverError, setServerError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+  const [slowWarning, setSlowWarning] = useState(false)
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
 
@@ -59,6 +60,8 @@ function Register() {
     setErrors({})
 
     setLoading(true)
+    setSlowWarning(false)
+    const wakeTimer = setTimeout(() => setSlowWarning(true), 5000)
     try {
       const res = await api.post('/auth/register', {
         name: form.name.trim(),
@@ -80,6 +83,8 @@ function Register() {
     } catch (e) {
       setServerError(e.response?.data?.error || 'Registration failed. Please try again.')
     }
+    clearTimeout(wakeTimer)
+    setSlowWarning(false)
     setLoading(false)
   }
 
@@ -285,6 +290,12 @@ function Register() {
               ) : 'Create Account →'}
             </button>
           </form>
+
+          {slowWarning && (
+            <p style={{ textAlign: 'center', color: '#f59e0b', marginTop: '12px', fontSize: '13px' }}>
+              ⏳ Server is waking up from sleep — this may take up to 60 seconds. Please wait...
+            </p>
+          )}
 
           <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: '24px', fontSize: '14px' }}>
             Already have an account?{' '}
