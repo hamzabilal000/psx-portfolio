@@ -169,10 +169,11 @@ async function refreshAccessToken(req, res) {
         let payload = { id: user._id, email: user.email, role: user.role, name: user.name }
         let newAccessToken = generateAccessToken(payload)
 
+        const isProd = process.env.NODE_ENV === 'production'
         res.cookie('access_token', newAccessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: isProd,
+            sameSite: isProd ? 'none' : 'lax',
             maxAge: 15 * 60 * 1000
         })
 
