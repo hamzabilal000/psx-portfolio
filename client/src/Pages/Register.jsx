@@ -3,6 +3,22 @@ import { useNavigate, Link } from 'react-router-dom'
 import api from '../api'
 import { useTheme } from '../context/ThemeContext'
 
+const Logo = () => (
+  <div style={{
+    width: '44px', height: '44px', borderRadius: '13px',
+    background: 'linear-gradient(135deg, #1a2f1a 0%, #0d1a0d 100%)',
+    border: '1.5px solid rgba(185,255,102,0.35)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0, boxShadow: '0 0 20px rgba(185,255,102,0.15)',
+  }}>
+    <svg width="26" height="26" viewBox="0 0 22 22" fill="none">
+      <polyline points="2,16 7,10 11,13 15,6 20,3"
+        stroke="#b9ff66" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="20" cy="3" r="1.8" fill="#b9ff66"/>
+    </svg>
+  </div>
+)
+
 function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [errors, setErrors] = useState({})
@@ -21,28 +37,14 @@ function Register() {
 
   function validate() {
     const errs = {}
-    if (!form.name.trim()) {
-      errs.name = 'Full name is required'
-    } else if (form.name.trim().length < 2) {
-      errs.name = 'Name must be at least 2 characters'
-    }
-    if (!form.email.trim()) {
-      errs.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      errs.email = 'Enter a valid email address'
-    }
-    if (!form.password) {
-      errs.password = 'Password is required'
-    } else if (form.password.length < 8) {
-      errs.password = 'Password must be at least 8 characters'
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])|(?=.*\d)/.test(form.password)) {
-      // just a soft hint, not blocking
-    }
-    if (!form.confirm) {
-      errs.confirm = 'Please confirm your password'
-    } else if (form.confirm !== form.password) {
-      errs.confirm = 'Passwords do not match'
-    }
+    if (!form.name.trim()) errs.name = 'Full name is required'
+    else if (form.name.trim().length < 2) errs.name = 'Name must be at least 2 characters'
+    if (!form.email.trim()) errs.email = 'Email is required'
+    else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Enter a valid email address'
+    if (!form.password) errs.password = 'Password is required'
+    else if (form.password.length < 8) errs.password = 'Password must be at least 8 characters'
+    if (!form.confirm) errs.confirm = 'Please confirm your password'
+    else if (form.confirm !== form.password) errs.confirm = 'Passwords do not match'
     return errs
   }
 
@@ -50,15 +52,9 @@ function Register() {
     e?.preventDefault()
     setServerError('')
     setSuccess('')
-
-    // ── All-or-Nothing: validate ALL fields before any API call ──
     const errs = validate()
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs)
-      return
-    }
+    if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setErrors({})
-
     setLoading(true)
     setSlowWarning(false)
     const wakeTimer = setTimeout(() => setSlowWarning(true), 5000)
@@ -69,10 +65,9 @@ function Register() {
         password: form.password
       })
       if (res.data.success === true) {
-        setSuccess('Account created! You can now sign in.')
+        setSuccess('Account created! Redirecting to sign in...')
         setTimeout(() => navigate('/'), 2000)
       } else {
-        // Don't store ANYTHING — server rejected
         const msg = res.data.error || 'Registration failed'
         if (res.data.code === 11000 || msg.toLowerCase().includes('already')) {
           setErrors({ email: 'This email is already registered' })
@@ -102,216 +97,185 @@ function Register() {
   const strengthColors = ['', '#ff4d4d', '#f59e0b', '#60a5fa', '#b9ff66']
   const strengthLabels = ['', 'Weak', 'Fair', 'Good', 'Strong']
 
+  const features = [
+    { icon: '◈', label: 'Track 68 PSX stocks' },
+    { icon: '✦', label: 'AI-powered recommendations' },
+    { icon: '◬', label: 'Real-time risk analysis' },
+    { icon: '⊟', label: 'Dividend & wealth calculators' },
+  ]
+
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'var(--bg)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <div style={{ minHeight: '100vh', display: 'flex', background: 'var(--bg)', overflow: 'hidden' }}>
 
-      {/* ── Floating Theme Toggle ── */}
-      <button
-        onClick={toggle}
-        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        style={{
-          position: 'fixed', top: '20px', right: '20px',
-          background: 'var(--bg-card)', border: '1px solid var(--border)',
-          borderRadius: '10px', padding: '8px 14px',
-          cursor: 'pointer', fontSize: '13px', fontWeight: 600,
-          color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '6px',
-          zIndex: 999,
-        }}
-      >
-        {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-      </button>
-
-      {/* Background blobs */}
+      {/* ── Left Panel ── */}
       <div style={{
-        position: 'absolute', top: '-15%', left: '-10%',
-        width: '500px', height: '500px', borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(185,255,102,0.05) 0%, transparent 70%)',
-        pointerEvents: 'none'
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '-20%', right: '-10%',
-        width: '400px', height: '400px', borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(185,255,102,0.04) 0%, transparent 70%)',
-        pointerEvents: 'none'
-      }} />
+        flex: 1, display: 'none',
+        flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+        background: 'linear-gradient(145deg, #0a1a0a 0%, #0d0d12 50%, #0a120a 100%)',
+        borderRight: '1px solid rgba(185,255,102,0.1)',
+        padding: '60px 50px', position: 'relative', overflow: 'hidden',
+      }} className="auth-left-panel">
 
-      <div style={{ width: '100%', maxWidth: '460px', position: 'relative', zIndex: 1 }} className="animate-in">
+        <div style={{ position:'absolute', top:'15%', right:'10%', width:'280px', height:'280px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.07) 0%, transparent 70%)', animation:'floatOrb 8s ease-in-out infinite' }} />
+        <div style={{ position:'absolute', bottom:'10%', left:'5%', width:'200px', height:'200px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.05) 0%, transparent 70%)', animation:'floatOrb 10s ease-in-out 3s infinite' }} />
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(185,255,102,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(185,255,102,0.03) 1px, transparent 1px)', backgroundSize:'40px 40px', pointerEvents:'none' }} />
 
-        {/* Brand */}
-        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            width: '60px', height: '60px', borderRadius: '16px',
-            background: 'var(--lime)', marginBottom: '20px',
-            fontSize: '28px', boxShadow: '0 8px 32px rgba(185,255,102,0.3)'
-          }}>
-            📈
-          </div>
-          <h1 style={{ fontSize: '30px', fontWeight: 700, color: 'var(--white)', margin: 0 }}>
-            Create Account
-          </h1>
-          <p style={{ color: 'var(--muted)', marginTop: '8px', fontSize: '14px' }}>
-            Start your investment journey on PSX
-          </p>
-        </div>
-
-        {/* Card */}
-        <div style={{
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          padding: '36px',
-        }}>
-          <div style={{ marginBottom: '28px' }}>
-            <div className="section-tag">Register</div>
-            <h2 style={{ fontSize: '22px', marginTop: '10px', color: 'var(--white)' }}>
-              New Account
+        <div style={{ position:'relative', zIndex:1, textAlign:'center', maxWidth:'380px' }}>
+          <div style={{ marginBottom:'36px' }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'12px', marginBottom:'24px' }}>
+              <Logo />
+              <div style={{ textAlign:'left' }}>
+                <div style={{ color:'var(--white)', fontWeight:700, fontSize:'18px' }}>PSX Portfolio</div>
+                <div style={{ color:'var(--lime)', fontSize:'11px', fontWeight:600 }}>AI Investment Advisor</div>
+              </div>
+            </div>
+            <h2 style={{ color:'var(--white)', fontSize:'26px', fontWeight:700, marginBottom:'12px', lineHeight:1.3 }}>
+              Everything you need<br/>to invest smarter
             </h2>
-            <p style={{ color: 'var(--muted)', fontSize: '13px', marginTop: '4px' }}>
-              All fields are required to create your account
+            <p style={{ color:'var(--muted)', fontSize:'14px', lineHeight:1.7 }}>
+              Join and get access to Pakistan's most comprehensive AI-powered stock portfolio platform.
             </p>
           </div>
 
-          <form onSubmit={handleRegister} noValidate>
-
-            {/* Server Error */}
-            {serverError && (
-              <div className="alert-error" style={{ marginBottom: '20px' }}>
-                <span>⚠</span> {serverError}
+          <div style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'32px' }}>
+            {features.map((f, i) => (
+              <div key={i} className={`stagger-${i+1}`} style={{ display:'flex', alignItems:'center', gap:'12px', background:'rgba(185,255,102,0.04)', border:'1px solid rgba(185,255,102,0.1)', borderRadius:'12px', padding:'12px 16px', textAlign:'left' }}>
+                <span style={{ color:'var(--lime)', fontSize:'16px', flexShrink:0 }}>{f.icon}</span>
+                <span style={{ color:'var(--muted)', fontSize:'13px' }}>{f.label}</span>
               </div>
-            )}
+            ))}
+          </div>
 
-            {/* Success */}
-            {success && (
-              <div className="alert-success" style={{ marginBottom: '20px' }}>
-                <span>✓</span> {success}
-              </div>
-            )}
+          <div style={{ color:'var(--muted)', fontSize:'11px', opacity:0.5 }}>
+            Built by <span style={{ color:'var(--lime)', fontWeight:700, opacity:1 }}>Hamza Bilal</span>
+          </div>
+        </div>
+      </div>
 
-            {/* Full Name */}
-            <div style={{ marginBottom: '16px' }}>
-              <label className="field-label">Full Name</label>
-              <input
-                type="text"
-                value={form.name}
-                onChange={e => handleChange('name', e.target.value)}
-                placeholder="Enter your full name"
-                className={`input-field${errors.name ? ' error' : ''}`}
-                autoComplete="name"
-              />
-              {errors.name && (
-                <p style={{ color: 'var(--danger)', fontSize: '12px', marginTop: '6px' }}>⚠ {errors.name}</p>
-              )}
+      {/* ── Right Panel (Form) ── */}
+      <div style={{
+        width:'100%', maxWidth:'500px', display:'flex', flexDirection:'column',
+        justifyContent:'center', padding:'40px 48px',
+        position:'relative', background:'var(--bg)', overflowY:'auto',
+      }} className="auth-right-panel animate-in">
+
+        <button onClick={toggle} style={{
+          position:'absolute', top:'24px', right:'24px',
+          background:'var(--bg-card)', border:'1px solid var(--border)',
+          borderRadius:'10px', padding:'8px 14px', cursor:'pointer',
+          fontSize:'12px', fontWeight:600, color:'var(--muted)',
+          display:'flex', alignItems:'center', gap:'6px',
+        }}>
+          {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+        </button>
+
+        <div style={{ marginBottom:'32px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'28px' }}>
+            <Logo />
+            <div>
+              <div style={{ color:'var(--white)', fontWeight:700, fontSize:'16px', lineHeight:1.2 }}>PSX Portfolio</div>
+              <div style={{ color:'var(--lime)', fontSize:'11px', fontWeight:600 }}>AI Investment Advisor</div>
             </div>
+          </div>
+          <div className="section-tag" style={{ marginBottom:'12px' }}>Register</div>
+          <h1 style={{ fontSize:'26px', fontWeight:700, color:'var(--white)', margin:'0 0 6px' }}>Create your account</h1>
+          <p style={{ color:'var(--muted)', fontSize:'14px', margin:0 }}>Start your PSX investment journey today</p>
+        </div>
 
-            {/* Email */}
-            <div style={{ marginBottom: '16px' }}>
-              <label className="field-label">Email Address</label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={e => handleChange('email', e.target.value)}
-                placeholder="you@example.com"
-                className={`input-field${errors.email ? ' error' : ''}`}
-                autoComplete="email"
-              />
-              {errors.email && (
-                <p style={{ color: 'var(--danger)', fontSize: '12px', marginTop: '6px' }}>⚠ {errors.email}</p>
-              )}
-            </div>
+        <form onSubmit={handleRegister} noValidate style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
+          {serverError && <div className="alert-error fade-in"><span>⚠</span> {serverError}</div>}
+          {success && <div className="alert-success fade-in"><span>✓</span> {success}</div>}
 
-            {/* Password */}
-            <div style={{ marginBottom: '8px' }}>
-              <label className="field-label">Password</label>
-              <input
-                type="password"
-                value={form.password}
-                onChange={e => handleChange('password', e.target.value)}
-                placeholder="At least 8 characters"
-                className={`input-field${errors.password ? ' error' : ''}`}
-                autoComplete="new-password"
-              />
-              {/* Strength Meter */}
-              {form.password.length > 0 && (
-                <div style={{ marginTop: '8px' }}>
-                  <div style={{ display: 'flex', gap: '4px', marginBottom: '4px' }}>
-                    {[1, 2, 3, 4].map(i => (
-                      <div key={i} style={{
-                        flex: 1, height: '3px', borderRadius: '99px',
-                        background: i <= strength ? strengthColors[strength] : '#222',
-                        transition: 'background 0.3s'
-                      }} />
-                    ))}
-                  </div>
-                  <p style={{ fontSize: '11px', color: strengthColors[strength] || 'var(--muted)' }}>
-                    {strengthLabels[strength] || ''} password
-                  </p>
+          <div>
+            <label className="field-label">Full Name</label>
+            <input type="text" value={form.name}
+              onChange={e => handleChange('name', e.target.value)}
+              placeholder="Enter your full name"
+              className={`input-field${errors.name ? ' error' : ''}`}
+              autoComplete="name"
+            />
+            {errors.name && <p className="fade-in" style={{ color:'var(--danger)', fontSize:'12px', marginTop:'6px' }}>⚠ {errors.name}</p>}
+          </div>
+
+          <div>
+            <label className="field-label">Email Address</label>
+            <input type="email" value={form.email}
+              onChange={e => handleChange('email', e.target.value)}
+              placeholder="you@example.com"
+              className={`input-field${errors.email ? ' error' : ''}`}
+              autoComplete="email"
+            />
+            {errors.email && <p className="fade-in" style={{ color:'var(--danger)', fontSize:'12px', marginTop:'6px' }}>⚠ {errors.email}</p>}
+          </div>
+
+          <div>
+            <label className="field-label">Password</label>
+            <input type="password" value={form.password}
+              onChange={e => handleChange('password', e.target.value)}
+              placeholder="At least 8 characters"
+              className={`input-field${errors.password ? ' error' : ''}`}
+              autoComplete="new-password"
+            />
+            {form.password.length > 0 && (
+              <div style={{ marginTop:'8px' }}>
+                <div style={{ display:'flex', gap:'4px', marginBottom:'4px' }}>
+                  {[1,2,3,4].map(i => (
+                    <div key={i} style={{ flex:1, height:'3px', borderRadius:'99px', background: i <= strength ? strengthColors[strength] : 'var(--border)', transition:'background 0.3s' }} />
+                  ))}
                 </div>
-              )}
-              {errors.password && (
-                <p style={{ color: 'var(--danger)', fontSize: '12px', marginTop: '4px' }}>⚠ {errors.password}</p>
-              )}
-            </div>
+                <p style={{ fontSize:'11px', color: strengthColors[strength] || 'var(--muted)' }}>
+                  {strengthLabels[strength]} password
+                </p>
+              </div>
+            )}
+            {errors.password && <p className="fade-in" style={{ color:'var(--danger)', fontSize:'12px', marginTop:'4px' }}>⚠ {errors.password}</p>}
+          </div>
 
-            {/* Confirm Password */}
-            <div style={{ marginBottom: '28px' }}>
-              <label className="field-label">Confirm Password</label>
-              <input
-                type="password"
-                value={form.confirm}
-                onChange={e => handleChange('confirm', e.target.value)}
-                placeholder="••••••••"
-                className={`input-field${errors.confirm ? ' error' : ''}`}
-                autoComplete="new-password"
-              />
-              {errors.confirm && (
-                <p style={{ color: 'var(--danger)', fontSize: '12px', marginTop: '6px' }}>⚠ {errors.confirm}</p>
-              )}
-            </div>
+          <div>
+            <label className="field-label">Confirm Password</label>
+            <input type="password" value={form.confirm}
+              onChange={e => handleChange('confirm', e.target.value)}
+              placeholder="••••••••"
+              className={`input-field${errors.confirm ? ' error' : ''}`}
+              autoComplete="new-password"
+            />
+            {errors.confirm && <p className="fade-in" style={{ color:'var(--danger)', fontSize:'12px', marginTop:'6px' }}>⚠ {errors.confirm}</p>}
+          </div>
 
-            <button type="submit" disabled={loading || !!success} className="btn-primary" style={{ width: '100%', padding: '14px' }}>
-              {loading ? (
-                <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                    style={{ animation: 'spin 0.8s linear infinite' }}>
-                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                  </svg>
-                  Creating Account...
-                </>
-              ) : 'Create Account →'}
-            </button>
-          </form>
+          <button type="submit" disabled={loading || !!success} className="btn-primary" style={{ width:'100%', padding:'14px', fontSize:'15px', marginTop:'4px' }}>
+            {loading ? (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                  style={{ animation:'spin 0.8s linear infinite' }}>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+                Creating Account...
+              </>
+            ) : 'Create Account →'}
+          </button>
 
           {slowWarning && (
-            <p style={{ textAlign: 'center', color: '#f59e0b', marginTop: '12px', fontSize: '13px' }}>
-              ⏳ Server is waking up from sleep — this may take up to 60 seconds. Please wait...
+            <p className="fade-in" style={{ textAlign:'center', color:'#f59e0b', fontSize:'13px' }}>
+              ⏳ Server is waking up — this may take up to 60 seconds. Please wait...
             </p>
           )}
+        </form>
 
-          <p style={{ textAlign: 'center', color: 'var(--muted)', marginTop: '24px', fontSize: '14px' }}>
-            Already have an account?{' '}
-            <Link to="/" style={{ color: 'var(--lime)', textDecoration: 'none', fontWeight: 600 }}>
-              Sign In
-            </Link>
-          </p>
-        </div>
-
-        <p style={{ textAlign: 'center', color: '#333', fontSize: '12px', marginTop: '24px' }}>
+        <p style={{ textAlign:'center', color:'var(--muted)', marginTop:'24px', fontSize:'14px' }}>
+          Already have an account?{' '}
+          <Link to="/" style={{ color:'var(--lime)', textDecoration:'none', fontWeight:600 }}>Sign In</Link>
+        </p>
+        <p style={{ textAlign:'center', color:'var(--muted)', fontSize:'12px', marginTop:'10px', opacity:0.4 }}>
           🔒 Your data is encrypted and secure
         </p>
       </div>
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
+        @media (min-width: 860px) {
+          .auth-left-panel { display: flex !important; }
+          .auth-right-panel { max-width: 500px !important; border-left: 1px solid var(--sidebar-border); }
+        }
       `}</style>
     </div>
   )
