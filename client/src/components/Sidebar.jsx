@@ -222,7 +222,7 @@ function Sidebar() {
           letterSpacing: '0.04em',
         }}>
           Built by{' '}
-          <a href="https://hamzabilal.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--lime)', fontWeight: 700, opacity: 1, textDecoration: 'none' }}
+          <a href="https://hamzabilal-dev.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--lime)', fontWeight: 700, opacity: 1, textDecoration: 'none' }}
             onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
             onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
           >
