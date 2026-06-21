@@ -30,8 +30,12 @@ function StockCompare() {
     try {
       let res = await api.post('/gemini/compare', { stock_a: stocks[0], stock_b: stocks[1] })
       setVerdict(res.data?.data?.verdict || res.data?.data || 'No verdict available.')
-    } catch {
-      setVerdict('AI service offline. Start it: cd ai-service && python main.py')
+    } catch (err) {
+      const msg = err.response?.data?.error || err.message || ''
+      const isTimeout = err.code === 'ECONNABORTED' || msg.includes('timeout')
+      setVerdict(isTimeout
+        ? 'AI service is waking up. Please try again in 30 seconds.'
+        : 'AI service is temporarily unavailable. Please try again shortly.')
     }
     setVerdictLoading(false)
   }

@@ -43,8 +43,15 @@ function Dashboard() {
       const res = await api.post('/gemini/chat', { message: msg })
       const reply = res.data?.data?.reply || 'No response from AI.'
       setChatMessages(prev => [...prev, { role: 'ai', text: reply }])
-    } catch {
-      setChatMessages(prev => [...prev, { role: 'ai', text: 'AI service offline. Start it: cd ai-service && python main.py' }])
+    } catch (err) {
+      const msg = err.response?.data?.error || err.message || ''
+      const isTimeout = err.code === 'ECONNABORTED' || msg.includes('timeout')
+      setChatMessages(prev => [...prev, {
+        role: 'ai',
+        text: isTimeout
+          ? 'AI service is waking up from sleep. Please try again in 30 seconds.'
+          : 'AI service is temporarily unavailable. Please try again shortly.'
+      }])
     }
     setChatLoading(false)
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
