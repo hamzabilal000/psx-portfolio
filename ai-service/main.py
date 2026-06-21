@@ -71,6 +71,10 @@ class GeminiNewsInput(BaseModel):
 
 # ── Core endpoints ─────────────────────────────────────────────────────────────
 
+@app.get("/")
+def root():
+    return {"status": "ok", "service": "PSX AI Service"}
+
 @app.get("/health")
 def health():
     return {"status": "ok", "gemini": gem._available()}
