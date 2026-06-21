@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 let COLORS = ['#b9ff66', '#60a5fa', '#f59e0b', '#a78bfa', '#fb7185', '#34d399']
 
@@ -16,7 +15,7 @@ function Recommendations() {
   async function fetchRecommendations() {
     setError(''); setLoading(true)
     try {
-      let res = await axios.get('http://localhost:8080/ai')
+      let res = await api.get('/ai')
       if (res.data.success == true) setRec(res.data.data)
       else setError(res.data.error)
     } catch (e) { setError(e.response?.data?.error || 'Failed to get recommendations') }

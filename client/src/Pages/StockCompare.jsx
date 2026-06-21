@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react'
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 function StockCompare() {
   let s1Ref = useRef(), s2Ref = useRef()
@@ -18,7 +17,7 @@ function StockCompare() {
     if (!s1 || !s2) return setError('Enter both symbols')
     setError(''); setVerdict(''); setLoading(true)
     try {
-      let res = await axios.get(`http://localhost:8080/stocks/compare?symbols=${s1},${s2}`)
+      let res = await api.get(`/stocks/compare?symbols=${s1},${s2}`)
       if (res.data.success == true) setStocks(res.data.data)
       else setError(res.data.error)
     } catch { setError('Comparison failed') }
@@ -29,7 +28,7 @@ function StockCompare() {
     if (stocks.length < 2) return
     setVerdictLoading(true); setVerdict('')
     try {
-      let res = await axios.post('http://localhost:8080/gemini/compare', { stock_a: stocks[0], stock_b: stocks[1] })
+      let res = await api.post('/gemini/compare', { stock_a: stocks[0], stock_b: stocks[1] })
       setVerdict(res.data?.data?.verdict || res.data?.data || 'No verdict available.')
     } catch {
       setVerdict('AI service offline. Start it: cd ai-service && python main.py')

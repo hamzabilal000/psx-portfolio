@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 function AdminDashboard() {
   let [stats, setStats] = useState(null)
@@ -15,8 +14,8 @@ function AdminDashboard() {
     async function load() {
       try {
         let [sRes, uRes] = await Promise.all([
-          axios.get('http://localhost:8080/admin/stats'),
-          axios.get('http://localhost:8080/admin/users')
+          api.get('/admin/stats'),
+          api.get('/admin/users')
         ])
         if (sRes.data.success) setStats(sRes.data.data)
         if (uRes.data.success) setUsers(uRes.data.data)
@@ -31,7 +30,7 @@ function AdminDashboard() {
     let price = parseFloat(priceRef.current.value)
     if (!symbol || !price) return
     try {
-      let res = await axios.put(`http://localhost:8080/admin/stocks/${symbol}/price`, { price })
+      let res = await api.put(`/admin/stocks/${symbol}/price`, { price })
       if (res.data.success == true) setPriceMsg(`✅ Updated ${symbol} to PKR ${price}`)
       else setPriceMsg('❌ ' + res.data.error)
     } catch { setPriceMsg('❌ Failed') }
@@ -39,7 +38,7 @@ function AdminDashboard() {
 
   async function triggerPriceUpdate() {
     try {
-      let res = await axios.post('http://localhost:8080/admin/prices/update')
+      let res = await api.post('/admin/prices/update')
       if (res.data.success == true) setPriceMsg('✅ Live price update triggered')
     } catch { setPriceMsg('❌ Update failed') }
   }

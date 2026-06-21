@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 let COLORS = ['#b9ff66', '#60a5fa', '#f59e0b', '#a78bfa', '#fb7185', '#34d399', '#f87171', '#38bdf8']
 
@@ -16,7 +15,7 @@ function RiskAnalyzer() {
 
   async function loadPortfolio() {
     try {
-      let res = await axios.get('http://localhost:8080/portfolio')
+      let res = await api.get('/portfolio')
       if (res.data.success) setPortfolio(res.data.data)
     } catch {}
   }
@@ -31,7 +30,7 @@ function RiskAnalyzer() {
         allocationPct: portfolio.metrics.currentValue > 0 ? (h.currentValue / portfolio.metrics.currentValue * 100) : 0,
         volatilityScore: h.stock?.volatilityScore || 50
       }))
-      let res = await axios.post('http://localhost:8080/calc/portfolio-risk', { holdings })
+      let res = await api.post('/calc/portfolio-risk', { holdings })
       if (res.data.success == true) setAnalysis(res.data.data)
       else setError(res.data.error)
     } catch { setError('Analysis failed') }

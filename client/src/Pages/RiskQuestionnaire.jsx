@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 let AMOUNTS  = [50000, 100000, 500000, 1000000, 5000000]
 let HORIZONS = [1, 3, 5, 10]
@@ -25,7 +24,7 @@ function RiskQuestionnaire() {
     if (required.some(k => !form[k])) return setError('Please answer all questions')
     setError(''); setLoading(true)
     try {
-      let res = await axios.post('http://localhost:8080/user/risk-profile', form)
+      let res = await api.post('/user/risk-profile', form)
       if (res.data.success == true) setResult(res.data.data.riskProfile)
       else setError(res.data.error)
     } catch { setError('Submission failed') }

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 function Alerts() {
   let [alerts, setAlerts] = useState([])
@@ -14,8 +13,8 @@ function Alerts() {
   async function loadAll() {
     try {
       let [aRes, nRes] = await Promise.all([
-        axios.get('http://localhost:8080/alerts'),
-        axios.get('http://localhost:8080/alerts/notifications')
+        api.get('/alerts'),
+        api.get('/alerts/notifications')
       ])
       if (aRes.data.success) setAlerts(aRes.data.data)
       if (nRes.data.success) setNotifications(nRes.data.data)
@@ -28,7 +27,7 @@ function Alerts() {
   async function createAlert() {
     setError('')
     try {
-      let res = await axios.post('http://localhost:8080/alerts', {
+      let res = await api.post('/alerts', {
         symbol: symbolRef.current.value.toUpperCase(),
         condition: condRef.current.value,
         targetPrice: parseFloat(priceRef.current.value)
@@ -40,11 +39,11 @@ function Alerts() {
   }
 
   async function deleteAlert(id) {
-    try { await axios.delete(`http://localhost:8080/alerts/${id}`); loadAll() } catch {}
+    try { await api.delete(`/alerts/${id}`); loadAll() } catch {}
   }
 
   async function markRead(id) {
-    try { await axios.put(`http://localhost:8080/alerts/notifications/${id}/read`); loadAll() } catch {}
+    try { await api.put(`/alerts/notifications/${id}/read`); loadAll() } catch {}
   }
 
   let unread = notifications.filter(n => !n.isRead).length

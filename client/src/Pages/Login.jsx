@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import { useTheme } from '../context/ThemeContext'
-axios.defaults.withCredentials = true
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -35,7 +34,7 @@ function Login() {
 
     setLoading(true)
     try {
-      const res = await axios.post('http://localhost:8080/auth/login', { email, password })
+      const res = await api.post('/auth/login', { email, password })
       if (res.data.success === true) {
         localStorage.setItem('user', JSON.stringify(res.data.data.user))
         navigate('/dashboard')

@@ -4,7 +4,8 @@
   "description": "PSX AI Portfolio Platform - Backend",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "seed": "node seeds/seedStocks.js"
   },
   "dependencies": {

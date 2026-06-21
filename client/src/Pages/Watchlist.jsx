@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 function Watchlist() {
   let [items, setItems] = useState([])
@@ -11,7 +10,7 @@ function Watchlist() {
 
   async function load() {
     try {
-      let res = await axios.get("http://localhost:8080/watchlist")
+      let res = await api.get("/watchlist")
       if (res.data.success) setItems(res.data.data)
     } catch {}
     setLoading(false)
@@ -24,7 +23,7 @@ function Watchlist() {
     if (!symbol) return
     setAdding(true)
     try {
-      let res = await axios.post("http://localhost:8080/watchlist", { symbol })
+      let res = await api.post("/watchlist", { symbol })
       if (res.data.success == true) { symbolRef.current.value = ''; load() }
       else if (res.data.code == 11000) alert('Already in watchlist')
       else alert(res.data.error)
@@ -34,7 +33,7 @@ function Watchlist() {
 
   async function handleRemove(symbol) {
     try {
-      await axios.delete(`http://localhost:8080/watchlist/${symbol}`)
+      await api.delete(`/watchlist/${symbol}`)
       load()
     } catch {}
   }

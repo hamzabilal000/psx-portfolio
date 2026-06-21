@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 function Transactions() {
   let [data, setData] = useState({ transactions: [], summary: {} })
@@ -14,7 +13,7 @@ function Transactions() {
       let params = {}
       if (filter.symbol) params.symbol = filter.symbol
       if (filter.type) params.type = filter.type
-      let res = await axios.get('http://localhost:8080/transactions', { params })
+      let res = await api.get('/transactions', { params })
       if (res.data.success) setData(res.data.data)
     } catch {}
     setLoading(false)

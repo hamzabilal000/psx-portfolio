@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-axios.defaults.withCredentials = true
+import api from '../api'
 
 function VerifyEmail() {
   let [status, setStatus] = useState('verifying')
@@ -13,7 +12,7 @@ function VerifyEmail() {
       let token = new URLSearchParams(window.location.search).get('token')
       if (!token) { setStatus('error'); setMsg('No token found'); return }
       try {
-        let res = await axios.post("http://localhost:8080/auth/verify-email", { token })
+        let res = await api.post('/auth/verify-email', { token })
         if (res.data.success == true) {
           setStatus('success')
           setMsg(res.data.data.message)

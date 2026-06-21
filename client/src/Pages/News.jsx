@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 function News() {
   let [news, setNews] = useState([])
@@ -12,7 +11,7 @@ function News() {
   async function loadMarketNews() {
     setLoading(true); setSymbol('')
     try {
-      let res = await axios.get('http://localhost:8080/news/market')
+      let res = await api.get('/news/market')
       if (res.data.success) setNews(res.data.data)
     } catch {}
     setLoading(false)
@@ -23,7 +22,7 @@ function News() {
     if (!sym) return
     setLoading(true); setSymbol(sym)
     try {
-      let res = await axios.get(`http://localhost:8080/news/${sym}`)
+      let res = await api.get(`/news/${sym}`)
       if (res.data.success) setNews(res.data.data)
     } catch {}
     setLoading(false)

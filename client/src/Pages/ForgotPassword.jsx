@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import { useTheme } from '../context/ThemeContext'
-axios.defaults.withCredentials = true
 
 function ForgotPassword() {
   const [email, setEmail] = useState('')
@@ -21,7 +20,7 @@ function ForgotPassword() {
 
     setLoading(true)
     try {
-      const res = await axios.post('http://localhost:8080/auth/forgot-password', { email: email.trim() })
+      const res = await api.post('/auth/forgot-password', { email: email.trim() })
       if (res.data.success === true) setMsg(res.data.data.message)
       else setError(res.data.error || 'Request failed')
     } catch {

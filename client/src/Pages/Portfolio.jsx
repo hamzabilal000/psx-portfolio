@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 let COLORS = ['#16a34a', '#22c55e', '#4ade80', '#f59e0b', '#3b82f6', '#8b5cf6', '#ef4444', '#ec4899']
 
@@ -18,7 +17,7 @@ function Portfolio() {
 
   async function loadPortfolio() {
     try {
-      let res = await axios.get("http://localhost:8080/portfolio")
+      let res = await api.get("/portfolio")
       if (res.data.success) setPortfolio(res.data.data)
     } catch {}
     setLoading(false)
@@ -29,7 +28,7 @@ function Portfolio() {
   async function handleAdd() {
     setError(''); setAddLoading(true)
     try {
-      let res = await axios.post("http://localhost:8080/portfolio/holding", {
+      let res = await api.post("/portfolio/holding", {
         symbol: symbolRef.current.value,
         quantity: parseFloat(qtyRef.current.value),
         avgBuyPrice: parseFloat(priceRef.current.value)
@@ -47,7 +46,7 @@ function Portfolio() {
   async function handleRemove(symbol) {
     if (!window.confirm(`Remove ${symbol} from portfolio?`)) return
     try {
-      let res = await axios.delete(`http://localhost:8080/portfolio/holding/${symbol}`)
+      let res = await api.delete(`/portfolio/holding/${symbol}`)
       if (res.data.success == true) loadPortfolio()
     } catch {}
   }

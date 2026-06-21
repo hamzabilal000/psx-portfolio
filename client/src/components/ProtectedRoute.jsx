@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-axios.defaults.withCredentials = true
+import api from '../api'
 
 function ProtectedRoute({ children, adminOnly }) {
   let [loading, setLoading] = useState(true)
@@ -11,7 +10,7 @@ function ProtectedRoute({ children, adminOnly }) {
   useEffect(() => {
     async function checkAuth() {
       try {
-        let res = await axios.get("http://localhost:8080/auth/me")
+        let res = await api.get('/auth/me')
         if (res.data.success) {
           setUser(res.data.data)
           if (adminOnly && res.data.data.role !== 'admin') {

@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
 } from 'recharts'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 const COLORS = ['#b9ff66', '#60a5fa', '#f59e0b', '#a78bfa', '#fb7185', '#34d399', '#f87171', '#38bdf8']
 
@@ -41,7 +40,7 @@ function Dashboard() {
     setChatMessages(prev => [...prev, { role: 'user', text: msg }])
     setChatLoading(true)
     try {
-      const res = await axios.post('http://localhost:8080/gemini/chat', { message: msg })
+      const res = await api.post('/gemini/chat', { message: msg })
       const reply = res.data?.data?.reply || 'No response from AI.'
       setChatMessages(prev => [...prev, { role: 'ai', text: reply }])
     } catch {
@@ -57,8 +56,8 @@ function Dashboard() {
     async function load() {
       try {
         const [portRes, stockRes] = await Promise.all([
-          axios.get('http://localhost:8080/portfolio'),
-          axios.get('http://localhost:8080/stocks'),
+          api.get('/portfolio'),
+          api.get('/stocks'),
         ])
         if (portRes.data.success) setPortfolio(portRes.data.data)
         if (stockRes.data.success) setStocks(stockRes.data.data)

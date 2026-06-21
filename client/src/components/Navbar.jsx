@@ -1,7 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import { useTheme } from '../context/ThemeContext'
-axios.defaults.withCredentials = true
 
 const navItems = [
   { path: '/dashboard',       label: 'Dashboard' },
@@ -24,7 +23,7 @@ function Navbar() {
   const user = JSON.parse(localStorage.getItem('user') || '{}')
 
   async function handleLogout() {
-    try { await axios.post('http://localhost:8080/auth/logout') } catch {}
+    try { await api.post('/auth/logout') } catch {}
     localStorage.removeItem('user')
     navigate('/')
   }

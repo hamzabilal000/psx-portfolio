@@ -1,8 +1,7 @@
 import { useRef, useState, forwardRef } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import axios from 'axios'
+import api from '../api'
 import Layout from '../components/Layout'
-axios.defaults.withCredentials = true
 
 let tools = ['CAGR', 'ROI', 'Future Value', 'Dividend', 'Goal', 'Real Return', 'Sharpe']
 
@@ -38,7 +37,7 @@ function Calculators() {
       } else if (active === 'Sharpe') {
         url = '/sharpe'; body = { portfolioReturnPct: +portRetRef.current.value, riskFreeRatePct: +rfRef.current.value, portfolioStdDevPct: +stdRef.current.value }
       }
-      let res = await axios.post(`http://localhost:8080/calc${url}`, body)
+      let res = await api.post(`/calc${url}`, body)
       if (res.data.success == true) setResult(res.data.data)
       else setError(res.data.error)
     } catch { setError('Calculation failed') }
