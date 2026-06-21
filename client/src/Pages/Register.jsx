@@ -199,7 +199,7 @@ function Register() {
                 type="text"
                 value={form.name}
                 onChange={e => handleChange('name', e.target.value)}
-                placeholder="Hamza Bilal"
+                placeholder="Enter your full name"
                 className={`input-field${errors.name ? ' error' : ''}`}
                 autoComplete="name"
               />
