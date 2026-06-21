@@ -124,14 +124,14 @@ function Register() {
       <div style={{
         flex: 1, display: 'none',
         flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-        background: 'linear-gradient(145deg, #0a1a0a 0%, #0d0d12 50%, #0a120a 100%)',
-        borderRight: '1px solid rgba(185,255,102,0.1)',
+        background: 'var(--sidebar-bg)',
+        borderRight: '1px solid var(--sidebar-border)',
         padding: '40px', position: 'relative', overflow: 'hidden',
       }} className="auth-left-panel">
 
-        <div style={{ position:'absolute', top:'15%', right:'10%', width:'280px', height:'280px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.07) 0%, transparent 70%)', animation:'floatOrb 8s ease-in-out infinite', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', top:'15%', right:'10%', width:'280px', height:'280px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.08) 0%, transparent 70%)', animation:'floatOrb 8s ease-in-out infinite', pointerEvents:'none' }} />
         <div style={{ position:'absolute', bottom:'10%', left:'5%', width:'200px', height:'200px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.05) 0%, transparent 70%)', animation:'floatOrb 10s ease-in-out 3s infinite', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(185,255,102,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(185,255,102,0.03) 1px, transparent 1px)', backgroundSize:'40px 40px', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize:'40px 40px', opacity:0.3, pointerEvents:'none' }} />
 
         <div style={{ position:'relative', zIndex:1, textAlign:'center', maxWidth:'360px', width:'100%' }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'12px', marginBottom:'20px' }}>
@@ -150,15 +150,15 @@ function Register() {
 
           <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'24px' }}>
             {features.map((f, i) => (
-              <div key={i} className={`stagger-${i+1}`} style={{ display:'flex', alignItems:'center', gap:'10px', background:'rgba(185,255,102,0.04)', border:'1px solid rgba(185,255,102,0.1)', borderRadius:'10px', padding:'10px 14px', textAlign:'left' }}>
+              <div key={i} className={`stagger-${i+1}`} style={{ display:'flex', alignItems:'center', gap:'10px', background:'var(--bg-hover)', border:'1px solid var(--border)', borderRadius:'10px', padding:'10px 14px', textAlign:'left' }}>
                 <span style={{ color:'var(--lime)', fontSize:'14px', flexShrink:0 }}>{f.icon}</span>
                 <span style={{ color:'var(--muted)', fontSize:'12px' }}>{f.label}</span>
               </div>
             ))}
           </div>
 
-          <div style={{ color:'var(--muted)', fontSize:'11px', opacity:0.5 }}>
-            Built by <span style={{ color:'var(--lime)', fontWeight:700, opacity:1 }}>Hamza Bilal</span>
+          <div style={{ color:'var(--muted)', fontSize:'11px', opacity:0.6 }}>
+            Built by <span style={{ color:'var(--lime)', fontWeight:700 }}>Hamza Bilal</span>
           </div>
         </div>
       </div>
@@ -166,8 +166,8 @@ function Register() {
       {/* ── Right Panel ── */}
       <div style={{
         width:'100%', maxWidth:'460px', height:'100vh', overflowY:'auto',
-        display:'flex', flexDirection:'column', justifyContent:'center',
-        padding:'40px 44px', position:'relative', background:'var(--bg)',
+        display:'flex', flexDirection:'column', justifyContent:'flex-start',
+        padding:'8vh 44px 40px', position:'relative', background:'var(--bg)',
         flexShrink: 0,
       }} className="auth-right-panel animate-in">
 

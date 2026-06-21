@@ -83,17 +83,18 @@ function Login() {
       <div style={{
         flex: 1, display: 'none',
         flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-        background: 'linear-gradient(145deg, #0a1a0a 0%, #0d0d12 50%, #0a120a 100%)',
-        borderRight: '1px solid rgba(185,255,102,0.1)',
+        background: 'var(--sidebar-bg)',
+        borderRight: '1px solid var(--sidebar-border)',
         padding: '40px', position: 'relative', overflow: 'hidden',
       }} className="auth-left-panel">
 
-        <div style={{ position:'absolute', top:'10%', left:'10%', width:'300px', height:'300px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.07) 0%, transparent 70%)', animation:'floatOrb 7s ease-in-out infinite', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', top:'10%', left:'10%', width:'300px', height:'300px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.08) 0%, transparent 70%)', animation:'floatOrb 7s ease-in-out infinite', pointerEvents:'none' }} />
         <div style={{ position:'absolute', bottom:'15%', right:'5%', width:'200px', height:'200px', borderRadius:'50%', background:'radial-gradient(circle, rgba(185,255,102,0.05) 0%, transparent 70%)', animation:'floatOrb 9s ease-in-out 2s infinite', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(185,255,102,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(185,255,102,0.03) 1px, transparent 1px)', backgroundSize:'40px 40px', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize:'40px 40px', opacity:0.3, pointerEvents:'none' }} />
 
         <div style={{ position:'relative', zIndex:1, textAlign:'center', maxWidth:'360px', width:'100%' }}>
-          <div style={{ background:'rgba(185,255,102,0.04)', border:'1px solid rgba(185,255,102,0.12)', borderRadius:'20px', padding:'24px', marginBottom:'28px' }}>
+          {/* Chart preview card */}
+          <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:'20px', padding:'24px', marginBottom:'28px' }}>
             <div style={{ display:'flex', alignItems:'flex-end', gap:'5px', height:'70px', marginBottom:'14px', justifyContent:'center' }}>
               {bars.map((h, i) => (
                 <div key={i} style={{
@@ -109,7 +110,7 @@ function Login() {
                 <div style={{ color:'var(--muted)', fontSize:'10px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Portfolio Value</div>
                 <div style={{ color:'var(--lime)', fontSize:'20px', fontWeight:700, marginTop:'2px' }}>PKR 2.4M</div>
               </div>
-              <div style={{ background:'rgba(185,255,102,0.12)', border:'1px solid rgba(185,255,102,0.2)', borderRadius:'8px', padding:'6px 10px' }}>
+              <div style={{ background:'var(--lime-glow)', border:'1px solid rgba(185,255,102,0.2)', borderRadius:'8px', padding:'6px 10px' }}>
                 <div style={{ color:'var(--lime)', fontSize:'12px', fontWeight:700 }}>+18.4%</div>
                 <div style={{ color:'var(--muted)', fontSize:'10px' }}>This year</div>
               </div>
@@ -125,15 +126,15 @@ function Login() {
 
           <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'24px' }}>
             {['18 comprehensive modules', 'Groq AI chat assistant', 'Real-time risk analysis'].map((f, i) => (
-              <div key={i} className={`stagger-${i+1}`} style={{ display:'flex', alignItems:'center', gap:'10px', background:'rgba(185,255,102,0.04)', border:'1px solid rgba(185,255,102,0.1)', borderRadius:'10px', padding:'9px 14px' }}>
+              <div key={i} className={`stagger-${i+1}`} style={{ display:'flex', alignItems:'center', gap:'10px', background:'var(--bg-hover)', border:'1px solid var(--border)', borderRadius:'10px', padding:'9px 14px' }}>
                 <span style={{ color:'var(--lime)', fontSize:'13px' }}>✓</span>
                 <span style={{ color:'var(--muted)', fontSize:'12px' }}>{f}</span>
               </div>
             ))}
           </div>
 
-          <div style={{ color:'var(--muted)', fontSize:'11px', opacity:0.5 }}>
-            Built by <span style={{ color:'var(--lime)', fontWeight:700, opacity:1 }}>Hamza Bilal</span>
+          <div style={{ color:'var(--muted)', fontSize:'11px', opacity:0.6 }}>
+            Built by <span style={{ color:'var(--lime)', fontWeight:700 }}>Hamza Bilal</span>
           </div>
         </div>
       </div>
@@ -141,8 +142,8 @@ function Login() {
       {/* ── Right Panel ── */}
       <div style={{
         width:'100%', maxWidth:'460px', height:'100vh', overflowY:'auto',
-        display:'flex', flexDirection:'column', justifyContent:'center',
-        padding:'40px 44px', position:'relative', background:'var(--bg)',
+        display:'flex', flexDirection:'column', justifyContent:'flex-start',
+        padding:'10vh 44px 40px', position:'relative', background:'var(--bg)',
         flexShrink: 0,
       }} className="auth-right-panel animate-in">
 
