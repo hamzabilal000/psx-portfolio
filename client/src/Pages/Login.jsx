@@ -77,7 +77,7 @@ function Login() {
       </button>
 
       {/* ── CARD ── */}
-      <div className="animate-in" style={{
+      <div className="animate-in auth-split" style={{
         display:'flex', width:'100%', maxWidth:'860px',
         borderRadius:'24px', overflow:'hidden',
         boxShadow:'0 32px 100px rgba(0,0,0,0.35), 0 0 0 1px var(--border)',

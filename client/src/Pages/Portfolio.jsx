@@ -57,16 +57,16 @@ function Portfolio() {
 
   return (
     <Layout>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px' }}>
+      <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', gap: '12px' }}>
         <div>
           <h1 style={{ color: 'var(--white)', fontSize: '24px', fontWeight: 700, margin: 0 }}>My Portfolio</h1>
           <p style={{ color: 'var(--muted)', marginTop: '4px' }}>Track your PSX investments</p>
         </div>
-        <button onClick={() => setAddModal(true)} className="btn-primary">+ Add Holding</button>
+        <button onClick={() => setAddModal(true)} className="btn-primary mobile-full">+ Add Holding</button>
       </div>
 
       {/* Metrics */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '28px' }}>
+      <div className="grid-5" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '28px' }}>
         {[
           { label: 'Total Invested',   value: metrics ? `PKR ${metrics.totalInvested?.toLocaleString()}` : '—' },
           { label: 'Current Value',    value: metrics ? `PKR ${metrics.currentValue?.toLocaleString()}`  : '—' },
@@ -83,7 +83,7 @@ function Portfolio() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '24px' }}>
+      <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '24px' }}>
         {/* Pie Chart */}
         <div className="card">
           <h3 style={{ color: 'var(--white)', margin: '0 0 16px', fontSize: '16px', fontWeight: 700 }}>Stock Allocation</h3>
@@ -142,7 +142,7 @@ function Portfolio() {
       {/* Add Modal */}
       {addModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }}>
-          <div className="card" style={{ width: '400px' }}>
+          <div className="card modal-card" style={{ width: '400px' }}>
             <h3 style={{ color: 'var(--white)', marginTop: 0 }}>Add Holding</h3>
             {error && <div className="alert-error" style={{ marginBottom: '12px' }}><span>⚠</span> {error}</div>}
             {[

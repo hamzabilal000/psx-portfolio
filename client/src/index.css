@@ -552,3 +552,78 @@ body {
 }
 [data-theme="light"] .theme-toggle { background: var(--lime-subtle); border-color: var(--lime); }
 [data-theme="light"] .theme-toggle-knob { background: var(--lime); transform: translateX(20px); }
+
+/* ─── Responsive Layout ──────────────────────────────── */
+
+/* Desktop: sidebar always visible, topbar offset */
+@media (min-width: 769px) {
+  .topbar         { left: 240px !important; }
+  .hamburger-btn  { display: none !important; }
+  .sidebar        { transform: translateX(0) !important; transition: none !important; }
+  .sidebar-backdrop { display: none !important; }
+}
+
+/* Mobile: sidebar is a slide-in drawer */
+@media (max-width: 768px) {
+  .topbar        { left: 0 !important; padding: 0 12px !important; }
+  .hamburger-btn { display: flex !important; }
+  .theme-label   { display: none; }
+
+  .page-content  { margin-left: 0 !important; padding: 66px 14px 100px !important; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.4);
+  }
+  .sidebar-open .sidebar { transform: translateX(0); }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 199;
+  }
+  .sidebar-open .sidebar-backdrop { display: block; }
+
+  /* Stack flex rows that don't work narrow */
+  .mobile-stack { flex-direction: column !important; align-items: flex-start !important; }
+  .mobile-hide  { display: none !important; }
+  .mobile-full  { width: 100% !important; }
+
+  /* Responsive grids */
+  .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-5 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-2 { grid-template-columns: 1fr !important; }
+  .grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Smaller card padding on mobile */
+  .card { padding: 16px !important; }
+
+  /* Table: horizontal scroll with smaller font */
+  .data-table th, .data-table td { padding: 10px 10px !important; font-size: 12px !important; }
+
+  /* Modals full-width on mobile */
+  .modal-card { width: calc(100vw - 32px) !important; max-width: 100% !important; }
+
+  /* Auth pages: hide left green panel, show only form */
+  .auth-left-panel-hide { display: none !important; }
+  .auth-card-inner { padding: 24px 20px !important; }
+  .auth-card { border-radius: 16px !important; }
+
+  /* Login/Register split card: hide left panel on small screens */
+  .auth-split { flex-direction: column !important; }
+  .auth-split > :first-child { display: none !important; }
+
+  /* Chat widget */
+  .chat-panel { right: 12px !important; bottom: 80px !important; width: calc(100vw - 24px) !important; }
+  .chat-fab   { right: 16px !important; bottom: 20px !important; }
+}
+
+/* Tablet: 2-column grids, sidebar still visible */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-content { padding: 84px 20px 32px !important; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-5 { grid-template-columns: repeat(3, 1fr) !important; }
+}

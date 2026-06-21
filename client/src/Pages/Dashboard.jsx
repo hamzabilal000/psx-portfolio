@@ -118,21 +118,21 @@ function Dashboard() {
   return (
     <Layout>
       {/* Header */}
-      <div className="animate-in" style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div className="animate-in mobile-stack" style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
         <div>
           <p style={{ color: 'var(--lime)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.04em', marginBottom: '4px', textTransform: 'uppercase' }}>{greeting}</p>
-          <h1 style={{ fontSize: '26px', fontWeight: 700, color: 'var(--white)', margin: 0 }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--white)', margin: 0 }}>
             {user.name?.split(' ')[0] || 'Investor'} <span style={{ color: 'var(--lime)' }}>👋</span>
           </h1>
           <p style={{ color: 'var(--muted)', marginTop: '5px', fontSize: '13px' }}>{greetingSub}</p>
         </div>
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 16px', fontSize: '12px', color: 'var(--muted)' }}>
-          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 16px', fontSize: '12px', color: 'var(--muted)', flexShrink: 0 }}>
+          {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
         </div>
       </div>
 
       {/* Metric Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+      <div className="grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
         {metricCards.map((card, idx) => (
           <div key={card.label} className={`hover-lift glow-border stagger-${idx + 1}`} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px', cursor: 'default', position: 'relative', overflow: 'hidden' }}>
             <div className="float-orb" style={{ width: '80px', height: '80px', background: card.color, bottom: '-30px', right: '-20px', opacity: 0.06, animationDelay: `${idx * 1.2}s` }} />
@@ -147,7 +147,7 @@ function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
+      <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
         {/* Sector Allocation */}
         <div className="card hover-lift glow-border stagger-5">
           <div className="section-tag" style={{ marginBottom: '6px' }}>Allocation</div>
@@ -175,7 +175,7 @@ function Dashboard() {
         <div className="card hover-lift glow-border stagger-6">
           <div className="section-tag" style={{ marginBottom: '6px' }}>Shortcuts</div>
           <h3 style={{ color: 'var(--white)', fontSize: '16px', fontWeight: 700, marginBottom: '16px' }}>Quick Actions</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+          <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
             {quickActions.map(action => (
               <button key={action.path} onClick={() => navigate(action.path)}
                 style={{ padding: '14px 10px', background: action.bg, border: `1px solid ${action.color}22`, borderRadius: '12px', color: action.color, cursor: 'pointer', fontSize: '11px', fontWeight: 600, fontFamily: 'inherit', transition: 'all 0.15s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}
@@ -190,7 +190,7 @@ function Dashboard() {
 
       {/* Top Stocks */}
       <div className="card hover-lift animate-in" style={{ animationDelay: '0.45s' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', gap: '10px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <div className="section-tag">Live Market</div>
@@ -235,6 +235,7 @@ function Dashboard() {
 
       {/* Floating trigger button */}
       <button
+        className="chat-fab"
         onClick={() => setChatOpen(o => !o)}
         title="Ask AI about PSX"
         style={{
@@ -253,7 +254,7 @@ function Dashboard() {
 
       {/* Chat panel */}
       {chatOpen && (
-        <div style={{
+        <div className="chat-panel" style={{
           position: 'fixed', bottom: '92px', right: '28px', zIndex: 499,
           width: 'min(380px, calc(100vw - 40px))',
           height: 'min(500px, calc(100vh - 120px))',

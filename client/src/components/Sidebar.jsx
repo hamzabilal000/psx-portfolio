@@ -16,7 +16,7 @@ const navItems = [
   { path: '/profile',         icon: '◯',  label: 'Profile' },
 ]
 
-function Sidebar() {
+function Sidebar({ onClose }) {
   const navigate  = useNavigate()
   const location  = useLocation()
   const { theme, toggle } = useTheme()
@@ -32,8 +32,13 @@ function Sidebar() {
     ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
     : 'U'
 
+  function handleNav(path) {
+    navigate(path)
+    onClose?.()
+  }
+
   return (
-    <div style={{
+    <div className="sidebar" style={{
       width: '240px',
       height: '100vh',
       background: 'var(--sidebar-bg)',
@@ -42,7 +47,7 @@ function Sidebar() {
       flexDirection: 'column',
       position: 'fixed',
       top: 0, left: 0,
-      zIndex: 100,
+      zIndex: 200,
       overflow: 'hidden',
     }}>
 
@@ -91,7 +96,7 @@ function Sidebar() {
             return (
               <div
                 key={item.path}
-                onClick={() => navigate(item.path)}
+                onClick={() => handleNav(item.path)}
                 className={active ? 'nav-item nav-item--active' : 'nav-item'}
                 style={{
                   animationDelay: `${idx * 40}ms`,
@@ -115,7 +120,7 @@ function Sidebar() {
                 Admin
               </p>
               <div
-                onClick={() => navigate('/admin')}
+                onClick={() => handleNav('/admin')}
                 className={location.pathname === '/admin' ? 'nav-item nav-item--active' : 'nav-item'}
                 style={{ animationDelay: `${(navItems.length + 1) * 40}ms`, color: location.pathname !== '/admin' ? 'var(--warn)' : undefined }}
               >
