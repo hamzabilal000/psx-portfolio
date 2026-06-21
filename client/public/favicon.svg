@@ -1,34 +1,81 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1e3a5f"/>
-      <stop offset="100%" style="stop-color:#0f1f3d"/>
+      <stop offset="0%" stop-color="#1a3322"/>
+      <stop offset="60%" stop-color="#0e2016"/>
+      <stop offset="100%" stop-color="#080f0b"/>
     </linearGradient>
-    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#3b82f6"/>
-      <stop offset="100%" style="stop-color:#22d3ee"/>
+    <linearGradient id="barTall" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d4ff80"/>
+      <stop offset="100%" stop-color="#8fd400"/>
     </linearGradient>
-    <linearGradient id="fill" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.4"/>
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0"/>
+    <linearGradient id="barMid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b9ff66"/>
+      <stop offset="100%" stop-color="#7ab800"/>
     </linearGradient>
+    <linearGradient id="barShort" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a0e855"/>
+      <stop offset="100%" stop-color="#6aa000"/>
+    </linearGradient>
+    <linearGradient id="areaFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b9ff66" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#b9ff66" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
 
-  <!-- Background rounded square -->
-  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Background -->
+  <rect width="64" height="64" rx="13" fill="url(#bg)"/>
 
-  <!-- Chart fill area -->
-  <path d="M8 48 L18 36 L26 40 L36 24 L46 28 L56 14 L56 52 L8 52 Z" fill="url(#fill)"/>
+  <!-- Inner border glow -->
+  <rect width="64" height="64" rx="13" fill="none" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.15"/>
 
-  <!-- Chart line -->
-  <polyline points="8,48 18,36 26,40 36,24 46,28 56,14"
-    fill="none" stroke="url(#line)" stroke-width="3.5"
-    stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Subtle grid -->
+  <line x1="8" y1="18" x2="56" y2="18" stroke="#b9ff66" stroke-opacity="0.05" stroke-width="0.8"/>
+  <line x1="8" y1="30" x2="56" y2="30" stroke="#b9ff66" stroke-opacity="0.05" stroke-width="0.8"/>
+  <line x1="8" y1="42" x2="56" y2="42" stroke="#b9ff66" stroke-opacity="0.05" stroke-width="0.8"/>
 
-  <!-- Dot at peak -->
-  <circle cx="56" cy="14" r="3.5" fill="#22d3ee"/>
+  <!-- Area fill under trend line -->
+  <path d="M11,50 L24,38 L37,42 L50,18 L50,54 L11,54 Z" fill="url(#areaFill)"/>
 
-  <!-- AI spark -->
-  <circle cx="50" cy="10" r="1.5" fill="#a78bfa" opacity="0.9"/>
-  <circle cx="58" cy="20" r="1" fill="#a78bfa" opacity="0.7"/>
+  <!-- Trend line -->
+  <polyline points="11,50 24,38 37,42 50,18"
+    fill="none" stroke="#b9ff66" stroke-width="2.2"
+    stroke-linecap="round" stroke-linejoin="round"
+    filter="url(#glow)" opacity="0.9"/>
+
+  <!-- Candlestick bars -->
+  <!-- Bar 1 (short) -->
+  <line x1="14" y1="52" x2="14" y2="46" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.4"/>
+  <rect x="11" y="46" width="6" height="8" rx="1.5" fill="url(#barShort)" opacity="0.85"/>
+  <line x1="14" y1="54" x2="14" y2="52" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Bar 2 (mid) -->
+  <line x1="27" y1="44" x2="27" y2="36" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.4"/>
+  <rect x="24" y="36" width="6" height="10" rx="1.5" fill="url(#barMid)" opacity="0.9"/>
+  <line x1="27" y1="46" x2="27" y2="44" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Bar 3 (tall, peak) -->
+  <line x1="40" y1="24" x2="40" y2="14" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="37" y="14" width="6" height="18" rx="1.5" fill="url(#barTall)" filter="url(#glow)"/>
+  <line x1="40" y1="32" x2="40" y2="28" stroke="#b9ff66" stroke-width="1" stroke-opacity="0.35"/>
+
+  <!-- Glow halo on tall bar -->
+  <rect x="35" y="12" width="10" height="22" rx="3" fill="#b9ff66" opacity="0.07" filter="url(#softglow)"/>
+
+  <!-- Peak dot on trend line -->
+  <circle cx="50" cy="18" r="4.5" fill="#b9ff66" opacity="0.2" filter="url(#softglow)"/>
+  <circle cx="50" cy="18" r="2.8" fill="#d4ff80"/>
+
+  <!-- Upward arrow at peak -->
+  <polyline points="47,21 50,17 53,21"
+    fill="none" stroke="#d4ff80" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
 </svg>
