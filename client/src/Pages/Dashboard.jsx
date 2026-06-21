@@ -57,7 +57,8 @@ function Dashboard() {
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
   }
   const user = JSON.parse(localStorage.getItem('user') || '{}')
-  const greeting = new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 17 ? 'Good afternoon' : 'Good evening'
+  const _h = new Date().getHours()
+  const greeting = _h >= 5 && _h < 12 ? 'Good morning' : _h >= 12 && _h < 17 ? 'Good afternoon' : _h >= 17 && _h < 21 ? 'Good evening' : 'Good night'
 
   useEffect(() => {
     async function load() {
@@ -228,7 +229,8 @@ function Dashboard() {
       {chatOpen && (
         <div style={{
           position: 'fixed', bottom: '92px', right: '28px', zIndex: 499,
-          width: '360px', height: '480px',
+          width: 'min(380px, calc(100vw - 40px))',
+          height: 'min(500px, calc(100vh - 120px))',
           background: 'var(--bg-card)', border: '1px solid var(--border)',
           borderRadius: '16px', display: 'flex', flexDirection: 'column',
           boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
