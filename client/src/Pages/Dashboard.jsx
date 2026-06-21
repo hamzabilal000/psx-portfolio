@@ -94,7 +94,7 @@ function Dashboard() {
   return (
     <Layout>
       {/* Header */}
-      <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div className="animate-in" style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <p style={{ color: 'var(--muted)', fontSize: '13px', marginBottom: '4px' }}>{greeting},</p>
           <h1 style={{ fontSize: '26px', fontWeight: 700, color: 'var(--white)', margin: 0 }}>
@@ -109,15 +109,14 @@ function Dashboard() {
 
       {/* Metric Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
-        {metricCards.map(card => (
-          <div key={card.label} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px', transition: 'all 0.2s', cursor: 'default' }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = card.color + '44'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)' }}>
+        {metricCards.map((card, idx) => (
+          <div key={card.label} className={`hover-lift glow-border stagger-${idx + 1}`} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px', cursor: 'default', position: 'relative', overflow: 'hidden' }}>
+            <div className="float-orb" style={{ width: '80px', height: '80px', background: card.color, bottom: '-30px', right: '-20px', opacity: 0.06, animationDelay: `${idx * 1.2}s` }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
               <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{card.label}</span>
               <span style={{ fontSize: '14px', color: card.color, background: card.color + '15', width: '28px', height: '28px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{card.icon}</span>
             </div>
-            <div style={{ color: card.color, fontSize: '19px', fontWeight: 700 }}>{loading ? <span style={{ color: 'var(--muted)' }}>—</span> : card.value}</div>
+            <div className="stat-value" style={{ color: card.color, fontSize: '19px', fontWeight: 700 }}>{loading ? <span className="skeleton" style={{ display:'inline-block', width:'90px', height:'20px' }} /> : card.value}</div>
             <div style={{ color: 'var(--muted)', fontSize: '11px', marginTop: '4px' }}>{card.sub}</div>
           </div>
         ))}
@@ -126,7 +125,7 @@ function Dashboard() {
       {/* Charts Row */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
         {/* Sector Allocation */}
-        <div className="card">
+        <div className="card hover-lift glow-border stagger-5">
           <div className="section-tag" style={{ marginBottom: '6px' }}>Allocation</div>
           <h3 style={{ color: 'var(--white)', fontSize: '16px', fontWeight: 700, marginBottom: '16px' }}>Sector Breakdown</h3>
           {pieData.length > 0 ? (
@@ -149,7 +148,7 @@ function Dashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="card">
+        <div className="card hover-lift glow-border stagger-6">
           <div className="section-tag" style={{ marginBottom: '6px' }}>Shortcuts</div>
           <h3 style={{ color: 'var(--white)', fontSize: '16px', fontWeight: 700, marginBottom: '16px' }}>Quick Actions</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
@@ -166,10 +165,13 @@ function Dashboard() {
       </div>
 
       {/* Top Stocks */}
-      <div className="card">
+      <div className="card hover-lift animate-in" style={{ animationDelay: '0.45s' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
-            <div className="section-tag" style={{ marginBottom: '6px' }}>Live Market</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <div className="section-tag">Live Market</div>
+              <span className="live-dot" />
+            </div>
             <h3 style={{ color: 'var(--white)', fontSize: '16px', fontWeight: 700 }}>PSX Top Stocks</h3>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -186,7 +188,7 @@ function Dashboard() {
               {loading
                 ? Array.from({ length: 5 }).map((_, i) => (
                     <tr key={i}>{Array.from({ length: 7 }).map((_, j) => (
-                      <td key={j}><div style={{ height: '14px', borderRadius: '4px', background: 'var(--bg-hover)', width: j === 1 ? '120px' : '60px' }} /></td>
+                      <td key={j}><div className="skeleton" style={{ height: '14px', width: j === 1 ? '120px' : '60px' }} /></td>
                     ))}</tr>
                   ))
                 : stocks.slice(0, 12).map(s => (
@@ -251,8 +253,9 @@ function Dashboard() {
           {/* Messages */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {chatMessages.map((msg, i) => (
-              <div key={i} style={{
+              <div key={i} className="msg-pop" style={{
                 display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                animationDelay: '0s',
               }}>
                 <div style={{
                   maxWidth: '80%', padding: '10px 14px', borderRadius: '12px',
@@ -260,6 +263,7 @@ function Dashboard() {
                   color: msg.role === 'user' ? '#0d0d0d' : 'var(--white)',
                   fontSize: '13px', lineHeight: 1.5,
                   border: msg.role === 'ai' ? '1px solid var(--border)' : 'none',
+                  boxShadow: msg.role === 'user' ? '0 2px 12px rgba(185,255,102,0.2)' : 'none',
                 }}>
                   {msg.text}
                 </div>

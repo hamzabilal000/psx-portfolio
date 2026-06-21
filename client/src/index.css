@@ -288,14 +288,123 @@ body {
 .text-muted { color: var(--muted); }
 
 /* ─── Animations ─────────────────────────────────────── */
-@keyframes fadeIn     { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
-@keyframes slideUp    { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-@keyframes slideInLeft{ from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:translateX(0); } }
-@keyframes bounce     { 0%,80%,100% { transform:translateY(0); } 40% { transform:translateY(-6px); } }
+@keyframes fadeIn      { from { opacity:0; transform:translateY(-6px); }  to { opacity:1; transform:translateY(0); } }
+@keyframes slideUp     { from { opacity:0; transform:translateY(24px); }  to { opacity:1; transform:translateY(0); } }
+@keyframes slideInLeft { from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:translateX(0); } }
+@keyframes slideInRight{ from { opacity:0; transform:translateX(18px); }  to { opacity:1; transform:translateX(0); } }
+@keyframes bounce      { 0%,80%,100% { transform:translateY(0); } 40% { transform:translateY(-6px); } }
+@keyframes spin        { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
 
-.animate-in    { animation: slideUp     0.35s ease both; }
-.fade-in       { animation: fadeIn      0.25s ease both; }
-.slide-in-left { animation: slideInLeft 0.3s  ease both; }
+/* Page entry — cards fade+slide up with stagger */
+@keyframes cardEnter {
+  from { opacity:0; transform:translateY(18px) scale(0.98); }
+  to   { opacity:1; transform:translateY(0)    scale(1);    }
+}
+
+/* Shimmer skeleton */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+/* Subtle lime pulse — for live indicators */
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(185,255,102,0.5); }
+  50%     { box-shadow: 0 0 0 6px rgba(185,255,102,0); }
+}
+
+/* Number count-up glow flash */
+@keyframes valueFlash {
+  0%   { color: var(--lime); }
+  100% { color: inherit; }
+}
+
+/* Floating glow orb */
+@keyframes floatOrb {
+  0%,100% { transform: translateY(0px)   scale(1);    opacity: 0.06; }
+  50%     { transform: translateY(-12px) scale(1.06); opacity: 0.10; }
+}
+
+/* Chat message pop-in */
+@keyframes msgPop {
+  from { opacity:0; transform:scale(0.88) translateY(8px); }
+  to   { opacity:1; transform:scale(1)    translateY(0);   }
+}
+
+/* Sidebar logo pulse */
+@keyframes logoPulse {
+  0%,100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(185,255,102,0.3); }
+  50%     { transform: scale(1.04); box-shadow: 0 0 0 8px rgba(185,255,102,0); }
+}
+
+/* Stat card number tick */
+@keyframes tickUp {
+  from { transform: translateY(6px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+/* ── Utility classes ── */
+.animate-in      { animation: slideUp     0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in         { animation: fadeIn      0.3s ease both; }
+.slide-in-left   { animation: slideInLeft 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+.slide-in-right  { animation: slideInRight 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+.msg-pop         { animation: msgPop      0.25s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* Staggered card entries — apply to wrappers */
+.stagger-1  { animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+.stagger-2  { animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) 0.12s both; }
+.stagger-3  { animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) 0.19s both; }
+.stagger-4  { animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
+.stagger-5  { animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) 0.33s both; }
+.stagger-6  { animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) 0.40s both; }
+
+/* Live dot */
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--lime);
+  display: inline-block;
+  animation: livePulse 2s ease infinite;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover) 50%, var(--bg-card) 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* Floating background orb — put on a decorative div */
+.float-orb {
+  position: absolute; border-radius: 50%;
+  background: var(--lime);
+  pointer-events: none;
+  animation: floatOrb 6s ease-in-out infinite;
+}
+
+/* Stat number flash on load */
+.stat-value { animation: tickUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* Logo pulse */
+.logo-pulse { animation: logoPulse 3s ease-in-out infinite; }
+
+/* Hover lift — add to any interactive card */
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s ease !important;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--border-hover);
+}
+
+/* Glow border on focus/hover */
+.glow-border {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+.glow-border:hover, .glow-border:focus-within {
+  border-color: rgba(185,255,102,0.35) !important;
+  box-shadow: 0 0 0 3px rgba(185,255,102,0.08) !important;
+}
 
 /* ─── Labels ─────────────────────────────────────────── */
 .field-label {
