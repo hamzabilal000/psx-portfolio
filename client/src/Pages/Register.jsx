@@ -165,7 +165,7 @@ function Register() {
           </div>
 
           <div style={{ position:'relative', zIndex:1, color:'rgba(255,255,255,0.3)', fontSize:'10px', letterSpacing:'0.05em' }}>
-            CREATOR <span style={{ color:'#b9ff66', fontWeight:700 }}>HAMZA BILAL</span>
+            CREATOR{' '}<a href="https://hamzabilal.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color:'#b9ff66', fontWeight:700, textDecoration:'none', borderBottom:'1px solid rgba(185,255,102,0.3)' }}>HAMZA BILAL</a>
           </div>
         </div>
 
