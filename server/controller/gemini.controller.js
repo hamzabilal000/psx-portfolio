@@ -4,7 +4,7 @@ const AI = () => process.env.AI_SERVICE_URL || "http://localhost:8001"
 
 const _aiPost = async (path, body) => {
     try {
-        const res = await axios.post(`${AI()}${path}`, body, { timeout: 20000 })
+        const res = await axios.post(`${AI()}${path}`, body, { timeout: 60000 })
         return res.data
     } catch (err) {
         if (err.code === 'ECONNREFUSED') {
