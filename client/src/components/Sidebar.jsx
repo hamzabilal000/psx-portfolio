@@ -35,7 +35,7 @@ function Sidebar() {
   return (
     <div style={{
       width: '240px',
-      minHeight: '100vh',
+      height: '100vh',
       background: 'var(--sidebar-bg)',
       borderRight: '1px solid var(--sidebar-border)',
       display: 'flex',
@@ -43,24 +43,32 @@ function Sidebar() {
       position: 'fixed',
       top: 0, left: 0,
       zIndex: 100,
+      overflow: 'hidden',
     }}>
 
       {/* ── Logo ── */}
-      <div style={{ padding: '22px 20px 18px', borderBottom: '1px solid var(--sidebar-border)' }}>
+      <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid var(--sidebar-border)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '36px', height: '36px', borderRadius: '10px',
-            background: 'var(--lime)',
+          {/* Custom SVG logo */}
+          <div className="logo-pulse" style={{
+            width: '38px', height: '38px', borderRadius: '11px',
+            background: 'linear-gradient(135deg, #1a2f1a 0%, #0d1a0d 100%)',
+            border: '1px solid rgba(185,255,102,0.3)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '18px', flexShrink: 0
+            flexShrink: 0,
           }}>
-            📈
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="2,16 7,10 11,13 15,6 20,3"
+                stroke="#b9ff66" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="20" cy="3" r="1.8" fill="#b9ff66"/>
+              <polyline points="2,19 7,19 7,10" stroke="rgba(185,255,102,0.25)" strokeWidth="1.5" strokeLinejoin="round" fill="none"/>
+            </svg>
           </div>
           <div>
             <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: '15px', lineHeight: 1.2 }}>
               PSX Portfolio
             </div>
-            <div style={{ color: 'var(--muted)', fontSize: '11px', marginTop: '2px' }}>
+            <div style={{ color: 'var(--lime)', fontSize: '10px', marginTop: '2px', fontWeight: 600, letterSpacing: '0.04em' }}>
               AI Investment Advisor
             </div>
           </div>
@@ -68,7 +76,7 @@ function Sidebar() {
       </div>
 
       {/* ── Navigation ── */}
-      <nav style={{ flex: 1, padding: '12px 0', overflowY: 'auto' }}>
+      <nav style={{ flex: 1, padding: '12px 0', overflowY: 'auto', minHeight: 0 }}>
         <div style={{ padding: '0 8px' }}>
           <p style={{
             fontSize: '10px', fontWeight: 700, color: 'var(--muted)',
@@ -123,6 +131,7 @@ function Sidebar() {
       <div style={{
         padding: '12px 16px',
         borderTop: '1px solid var(--sidebar-border)',
+        flexShrink: 0,
       }}>
         <div
           onClick={toggle}
@@ -153,7 +162,7 @@ function Sidebar() {
       </div>
 
       {/* ── User + Logout ── */}
-      <div style={{ padding: '12px 16px 16px', borderTop: '1px solid var(--sidebar-border)' }}>
+      <div style={{ padding: '12px 16px 16px', borderTop: '1px solid var(--sidebar-border)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
           <div style={{
             width: '34px', height: '34px', borderRadius: '9px',
@@ -205,6 +214,18 @@ function Sidebar() {
         >
           ↩ Sign Out
         </button>
+
+        {/* Made by */}
+        <div style={{
+          marginTop: '12px', textAlign: 'center',
+          fontSize: '10px', color: 'var(--muted)', opacity: 0.5,
+          letterSpacing: '0.04em',
+        }}>
+          Built by{' '}
+          <span style={{ color: 'var(--lime)', fontWeight: 700, opacity: 1 }}>
+            Hamza Bilal
+          </span>
+        </div>
       </div>
     </div>
   )
