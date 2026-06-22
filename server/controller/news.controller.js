@@ -42,17 +42,17 @@ async function getStockNews(req, res) {
                 })
                 articles = newsRes.data.articles || []
             } catch {
-                articles = await _rssNews(symbol)
+                try { articles = await _rssNews(symbol) } catch {}
             }
         } else {
-            articles = await _rssNews(symbol)
+            try { articles = await _rssNews(symbol) } catch {}
         }
 
         const enriched = await _enrichSentiment(articles)
         res.json({ success: true, data: enriched })
     } catch (error) {
         console.log('[News]', error.message)
-        res.json({ success: false, error: error.message, data: [] })
+        res.json({ success: true, data: [], serviceDown: true })
     }
 }
 
