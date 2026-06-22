@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import Layout from '../components/Layout'
+import AIThinking from '../components/AIThinking'
+import WakeUpAI from '../components/WakeUpAI'
 
 let AMOUNTS  = [50000, 100000, 500000, 1000000, 5000000]
 let HORIZONS = [1, 3, 5, 10]
@@ -12,22 +14,36 @@ function RiskQuestionnaire() {
     investmentAmount: '', timeHorizonYears: '', riskTolerance: '',
     dividendPreference: '', ageRange: '', monthlyInvestment: 0, investmentGoal: ''
   })
-  let [result, setResult] = useState(null)
+  let [result, setResult]   = useState(null)
   let [loading, setLoading] = useState(false)
-  let [error, setError] = useState('')
+  let [sleeping, setSleeping] = useState(false)
+  let [savedForm, setSavedForm] = useState(null)
+  let [error, setError]     = useState('')
   let navigate = useNavigate()
 
   function set(key, val) { setForm(f => ({ ...f, [key]: val })) }
 
-  async function handleSubmit() {
+  async function handleSubmit(formOverride) {
+    let data = formOverride || form
     let required = ['investmentAmount', 'timeHorizonYears', 'riskTolerance', 'dividendPreference', 'ageRange', 'investmentGoal']
-    if (required.some(k => !form[k])) return setError('Please answer all questions')
-    setError(''); setLoading(true)
+    if (!formOverride && required.some(k => !data[k])) return setError('Please answer all questions')
+    setError(''); setSleeping(false); setLoading(true)
     try {
-      let res = await api.post('/user/risk-profile', form)
-      if (res.data.success == true) setResult(res.data.data.riskProfile)
-      else setError(res.data.error)
-    } catch { setError('Submission failed') }
+      let res = await api.post('/user/risk-profile', data)
+      if (res.data.success) {
+        setResult(res.data.data.riskProfile)
+      } else if (res.data.sleeping) {
+        setSavedForm(data); setSleeping(true)
+      } else {
+        setError(res.data.error || 'Submission failed')
+      }
+    } catch (e) {
+      if (e.response?.data?.sleeping) {
+        setSavedForm(data); setSleeping(true)
+      } else {
+        setError(e.response?.data?.error || 'Submission failed. Please try again.')
+      }
+    }
     setLoading(false)
   }
 
@@ -94,6 +110,14 @@ function RiskQuestionnaire() {
             <button onClick={() => setResult(null)} className="btn-outline">Retake Questionnaire</button>
           </div>
         </div>
+      ) : loading ? (
+        <div className="card" style={{ maxWidth: '760px' }}>
+          <AIThinking mode="full" label="AI is analyzing your investor profile" />
+        </div>
+      ) : sleeping ? (
+        <div className="card" style={{ maxWidth: '760px' }}>
+          <WakeUpAI onReady={() => { setSleeping(false); handleSubmit(savedForm) }} />
+        </div>
       ) : (
         <div className="card" style={{ maxWidth: '760px' }}>
           {error && <div className="alert-error" style={{ marginBottom: '16px' }}><span>⚠</span> {error}</div>}
@@ -118,8 +142,8 @@ function RiskQuestionnaire() {
               { value: 'Capital Growth',  label: '🚀 Capital Growth'  },
             ]} />
 
-          <button onClick={handleSubmit} disabled={loading} className="btn-primary" style={{ marginTop: '8px', padding: '12px 32px' }}>
-            {loading ? 'Analyzing...' : '🤖 Generate My Profile'}
+          <button onClick={() => handleSubmit()} disabled={loading} className="btn-primary" style={{ marginTop: '8px', padding: '12px 32px' }}>
+            🤖 Generate My Profile
           </button>
         </div>
       )}

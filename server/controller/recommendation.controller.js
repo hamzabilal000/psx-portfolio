@@ -31,11 +31,15 @@ async function getRecommendations(req, res) {
             aiRes = await axios.post(`${process.env.AI_SERVICE_URL}/recommend`, {
                 profile,
                 stocks
-            }, { timeout: 15000 })
+            }, { timeout: 65000 })
         } catch (aiErr) {
+            const isSleeping = aiErr.code === 'ECONNREFUSED' || aiErr.code === 'ECONNRESET' || aiErr.code === 'ETIMEDOUT' || aiErr.code === 'ECONNABORTED' || aiErr.response?.status === 503
             return res.status(503).json({
                 success: false,
-                error: "AI service is not running. Start it with: cd ai-service && python main.py"
+                sleeping: isSleeping,
+                error: isSleeping
+                    ? "The AI service is starting up. Please wait 30–60 seconds and try again."
+                    : (aiErr.response?.data?.detail || "AI service unavailable. Please try again.")
             })
         }
 
