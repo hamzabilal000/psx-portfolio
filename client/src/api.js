@@ -54,4 +54,13 @@ api.interceptors.response.use(
   }
 )
 
+// True when the AI/Python service is unreachable, starting up, or Render returned its own 503
+export function aiSleeping(err) {
+  return (
+    !err.response ||                       // network error, CORS, or Render proxy 503 with no JSON
+    err.response?.status === 503 ||        // service unavailable from our server
+    !!err.response?.data?.sleeping         // our explicit sleeping flag
+  )
+}
+
 export default api

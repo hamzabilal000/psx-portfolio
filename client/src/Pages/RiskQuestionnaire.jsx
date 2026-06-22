@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import api from '../api'
+import api, { aiSleeping } from '../api'
 import Layout from '../components/Layout'
 import AIThinking from '../components/AIThinking'
 import WakeUpAI from '../components/WakeUpAI'
@@ -38,7 +38,7 @@ function RiskQuestionnaire() {
         setError(res.data.error || 'Submission failed')
       }
     } catch (e) {
-      if (e.response?.data?.sleeping) {
+      if (aiSleeping(e)) {
         setSavedForm(data); setSleeping(true)
       } else {
         setError(e.response?.data?.error || 'Submission failed. Please try again.')

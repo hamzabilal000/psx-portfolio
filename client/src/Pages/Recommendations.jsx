@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import api from '../api'
+import api, { aiSleeping } from '../api'
 import Layout from '../components/Layout'
 import AIThinking from '../components/AIThinking'
 import WakeUpAI from '../components/WakeUpAI'
@@ -23,8 +23,8 @@ function Recommendations() {
       else if (res.data.sleeping) setSleeping(true)
       else setError(res.data.error || 'Failed to get recommendations')
     } catch (e) {
-      if (e.response?.data?.sleeping) setSleeping(true)
-      else setError(e.response?.data?.error || 'Failed to get recommendations')
+      if (aiSleeping(e)) setSleeping(true)
+      else setError(e.response?.data?.error || 'Failed to get recommendations. Please try again.')
     }
     setLoading(false)
   }

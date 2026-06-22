@@ -5,7 +5,7 @@ import {
 } from 'recharts'
 import AIThinking from '../components/AIThinking'
 import WakeUpAI from '../components/WakeUpAI'
-import api from '../api'
+import api, { aiSleeping } from '../api'
 import Layout from '../components/Layout'
 
 const COLORS = ['#b9ff66', '#60a5fa', '#f59e0b', '#a78bfa', '#fb7185', '#34d399', '#f87171', '#38bdf8']
@@ -56,12 +56,11 @@ function Dashboard() {
         setChatMessages(prev => [...prev, { role: 'ai', text: res.data?.error || 'Could not get a response. Please try again.' }])
       }
     } catch (err) {
-      const sleeping = err.response?.data?.sleeping
-      if (sleeping) {
+      if (aiSleeping(err)) {
         setPendingMsg(msg)
         setAiSleeping(true)
       } else {
-        setChatMessages(prev => [...prev, { role: 'ai', text: 'Something went wrong. Please try again.' }])
+        setChatMessages(prev => [...prev, { role: 'ai', text: err.response?.data?.error || 'Could not get a response. Please try again.' }])
       }
     }
     setChatLoading(false)

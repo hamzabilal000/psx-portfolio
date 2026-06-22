@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import api from '../api'
+import api, { aiSleeping } from '../api'
 import Layout from '../components/Layout'
 import AIThinking from '../components/AIThinking'
 import WakeUpAI from '../components/WakeUpAI'
@@ -94,7 +94,7 @@ function StockCompare() {
         setVerdict('⚠ ' + (res.data?.error || 'AI request failed. Please try again.'))
       }
     } catch (err) {
-      if (err.response?.data?.sleeping) {
+      if (aiSleeping(err)) {
         setVerdictSleeping(true)
       } else {
         setVerdict('⚠ ' + (err.response?.data?.error || 'Something went wrong. Please try again.'))
