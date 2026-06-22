@@ -3,9 +3,9 @@ load_dotenv()  # must be first — loads ai-service/.env before any os.getenv() 
 
 import os, logging
 if not os.getenv("GEMINI_API_KEY"):
-    logging.critical("GEMINI_API_KEY is not set — AI features (chat, compare, analysis) will fail. Set it in Render Environment Variables.")
+    print("STARTUP ERROR: GEMINI_API_KEY is not set — AI features will fail.", flush=True)
 else:
-    logging.info("GEMINI_API_KEY loaded OK — AI features enabled.")
+    print("STARTUP OK: GEMINI_API_KEY loaded — AI features enabled.", flush=True)
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware

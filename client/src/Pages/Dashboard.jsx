@@ -26,14 +26,14 @@ function Dashboard() {
   const navigate = useNavigate()
 
   // AI Chat state
-  const [chatOpen,     setChatOpen]     = useState(false)
-  const [chatMessages, setChatMessages] = useState([
+  const [chatOpen,      setChatOpen]      = useState(false)
+  const [chatMessages,  setChatMessages]  = useState([
     { role: 'ai', text: 'Hi! I\'m your PSX AI assistant. Ask me anything about stocks, dividends, or your portfolio.' }
   ])
-  const [chatInput,    setChatInput]    = useState('')
-  const [chatLoading,  setChatLoading]  = useState(false)
-  const [aiSleeping,   setAiSleeping]   = useState(false)
-  const [pendingMsg,   setPendingMsg]   = useState('')
+  const [chatInput,     setChatInput]     = useState('')
+  const [chatLoading,   setChatLoading]   = useState(false)
+  const [chatSleeping,  setChatSleeping]  = useState(false)
+  const [pendingMsg,    setPendingMsg]    = useState('')
   const chatEndRef = useRef(null)
 
   async function sendChat(e) {
@@ -41,7 +41,7 @@ function Dashboard() {
     const msg = chatInput.trim()
     if (!msg || chatLoading) return
     setChatInput('')
-    setAiSleeping(false)
+    setChatSleeping(false)
     setChatMessages(prev => [...prev, { role: 'user', text: msg }])
     setChatLoading(true)
     try {
@@ -51,14 +51,14 @@ function Dashboard() {
         setChatMessages(prev => [...prev, { role: 'ai', text: reply }])
       } else if (res.data?.sleeping) {
         setPendingMsg(msg)
-        setAiSleeping(true)
+        setChatSleeping(true)
       } else {
         setChatMessages(prev => [...prev, { role: 'ai', text: res.data?.error || 'Could not get a response. Please try again.' }])
       }
     } catch (err) {
       if (aiSleeping(err)) {
         setPendingMsg(msg)
-        setAiSleeping(true)
+        setChatSleeping(true)
       } else {
         setChatMessages(prev => [...prev, { role: 'ai', text: err.response?.data?.error || 'Could not get a response. Please try again.' }])
       }
@@ -68,7 +68,7 @@ function Dashboard() {
   }
 
   function handleAiReady() {
-    setAiSleeping(false)
+    setChatSleeping(false)
     if (pendingMsg) {
       setChatInput(pendingMsg)
       setPendingMsg('')
@@ -321,7 +321,7 @@ function Dashboard() {
                 <AIThinking mode="chat" />
               </div>
             )}
-            {aiSleeping && !chatLoading && (
+            {chatSleeping && !chatLoading && (
               <div style={{
                 background: 'var(--bg)', border: '1px solid rgba(245,158,11,0.3)',
                 borderRadius: '12px', maxWidth: '88%',
