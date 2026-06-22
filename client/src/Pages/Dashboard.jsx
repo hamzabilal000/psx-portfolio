@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
 } from 'recharts'
+import AIThinking from '../components/AIThinking'
 import api from '../api'
 import Layout from '../components/Layout'
 
@@ -295,14 +296,11 @@ function Dashboard() {
               </div>
             ))}
             {chatLoading && (
-              <div style={{ display: 'flex', gap: '4px', padding: '8px 0' }}>
-                {[0,1,2].map(i => (
-                  <div key={i} style={{
-                    width: '7px', height: '7px', borderRadius: '50%',
-                    background: 'var(--lime)', opacity: 0.6,
-                    animation: `bounce 1.2s ${i * 0.2}s infinite ease-in-out`,
-                  }} />
-                ))}
+              <div style={{
+                background: 'var(--bg)', border: '1px solid var(--border)',
+                borderRadius: '12px', padding: '10px 14px', maxWidth: '80%',
+              }}>
+                <AIThinking mode="chat" />
               </div>
             )}
             <div ref={chatEndRef} />

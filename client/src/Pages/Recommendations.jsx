@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import api from '../api'
 import Layout from '../components/Layout'
+import AIThinking from '../components/AIThinking'
 
 let COLORS = ['#b9ff66', '#60a5fa', '#f59e0b', '#a78bfa', '#fb7185', '#34d399']
 
@@ -51,12 +52,7 @@ function Recommendations() {
         </div>
       )}
 
-      {loading && (
-        <div style={{ textAlign: 'center', padding: '80px 0' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤖</div>
-          <p style={{ color: 'var(--muted)' }}>AI is analyzing stocks for your profile...</p>
-        </div>
-      )}
+      {loading && <AIThinking mode="full" label="AI is building your portfolio" />}
 
       {rec && !loading && (
         <>
