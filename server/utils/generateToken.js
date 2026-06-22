@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 
 function generateAccessToken(payload) {
     return jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '15m'
+        expiresIn: process.env.JWT_EXPIRES_IN || '4h'
     })
 }
 
@@ -19,7 +19,7 @@ function setTokenCookies(res, accessToken, refreshToken) {
         httpOnly: true,
         secure: isProd,
         sameSite: isProd ? 'none' : 'lax',
-        maxAge: 15 * 60 * 1000
+        maxAge: 4 * 60 * 60 * 1000   // 4 hours
     })
     res.cookie('refresh_token', refreshToken, {
         httpOnly: true,

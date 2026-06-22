@@ -174,7 +174,7 @@ async function refreshAccessToken(req, res) {
             httpOnly: true,
             secure: isProd,
             sameSite: isProd ? 'none' : 'lax',
-            maxAge: 15 * 60 * 1000
+            maxAge: 4 * 60 * 60 * 1000   // 4 hours
         })
 
         res.json({ success: true, data: { message: "Token refreshed" } })
