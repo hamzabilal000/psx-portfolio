@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import api from '../api'
 import Layout from '../components/Layout'
 import AIThinking from '../components/AIThinking'
+import WakeUpAI from '../components/WakeUpAI'
 
 function NotFound({ error }) {
   return (
@@ -63,8 +64,9 @@ function StockCompare() {
   let [stocks, setStocks] = useState([])
   let [loading, setLoading] = useState(false)
   let [error, setError] = useState('')
-  let [verdict, setVerdict] = useState('')
+  let [verdict, setVerdict]               = useState('')
   let [verdictLoading, setVerdictLoading] = useState(false)
+  let [verdictSleeping, setVerdictSleeping] = useState(false)
 
   async function handleCompare() {
     let s1 = s1Ref.current.value.trim().toUpperCase()
@@ -81,16 +83,22 @@ function StockCompare() {
 
   async function getAIVerdict() {
     if (stocks.length < 2) return
-    setVerdictLoading(true); setVerdict('')
+    setVerdictLoading(true); setVerdict(''); setVerdictSleeping(false)
     try {
       let res = await api.post('/gemini/compare', { stock_a: stocks[0], stock_b: stocks[1] })
-      setVerdict(res.data?.data?.verdict || res.data?.data || 'No verdict available.')
+      if (res.data?.success) {
+        setVerdict(res.data?.data?.verdict || res.data?.data || 'No verdict available.')
+      } else if (res.data?.sleeping) {
+        setVerdictSleeping(true)
+      } else {
+        setVerdict('⚠ ' + (res.data?.error || 'AI request failed. Please try again.'))
+      }
     } catch (err) {
-      const msg = err.response?.data?.error || err.message || ''
-      const isTimeout = err.code === 'ECONNABORTED' || msg.includes('timeout')
-      setVerdict(isTimeout
-        ? '⏳ AI service timed out. Please try again in 30 seconds.'
-        : '⚠ AI service is temporarily unavailable. Please try again shortly.')
+      if (err.response?.data?.sleeping) {
+        setVerdictSleeping(true)
+      } else {
+        setVerdict('⚠ ' + (err.response?.data?.error || 'Something went wrong. Please try again.'))
+      }
     }
     setVerdictLoading(false)
   }
@@ -145,6 +153,8 @@ function StockCompare() {
           <div className="card" style={{ marginBottom:'16px' }}>
             {verdictLoading ? (
               <AIThinking mode="inline" label="AI comparing stocks" />
+            ) : verdictSleeping ? (
+              <WakeUpAI compact onReady={() => { setVerdictSleeping(false); getAIVerdict() }} />
             ) : verdict ? (
               <div style={{ display:'flex', gap:'14px', alignItems:'flex-start', flexWrap:'wrap' }}>
                 <div style={{

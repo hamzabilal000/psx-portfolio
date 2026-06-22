@@ -4,6 +4,7 @@ import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
 } from 'recharts'
 import AIThinking from '../components/AIThinking'
+import WakeUpAI from '../components/WakeUpAI'
 import api from '../api'
 import Layout from '../components/Layout'
 
@@ -29,8 +30,10 @@ function Dashboard() {
   const [chatMessages, setChatMessages] = useState([
     { role: 'ai', text: 'Hi! I\'m your PSX AI assistant. Ask me anything about stocks, dividends, or your portfolio.' }
   ])
-  const [chatInput,   setChatInput]   = useState('')
-  const [chatLoading, setChatLoading] = useState(false)
+  const [chatInput,    setChatInput]    = useState('')
+  const [chatLoading,  setChatLoading]  = useState(false)
+  const [aiSleeping,   setAiSleeping]   = useState(false)
+  const [pendingMsg,   setPendingMsg]   = useState('')
   const chatEndRef = useRef(null)
 
   async function sendChat(e) {
@@ -38,24 +41,40 @@ function Dashboard() {
     const msg = chatInput.trim()
     if (!msg || chatLoading) return
     setChatInput('')
+    setAiSleeping(false)
     setChatMessages(prev => [...prev, { role: 'user', text: msg }])
     setChatLoading(true)
     try {
       const res = await api.post('/gemini/chat', { message: msg })
-      const reply = res.data?.data?.reply || 'No response from AI.'
-      setChatMessages(prev => [...prev, { role: 'ai', text: reply }])
+      if (res.data?.success) {
+        const reply = res.data?.data?.reply || 'No response from AI.'
+        setChatMessages(prev => [...prev, { role: 'ai', text: reply }])
+      } else if (res.data?.sleeping) {
+        setPendingMsg(msg)
+        setAiSleeping(true)
+      } else {
+        setChatMessages(prev => [...prev, { role: 'ai', text: res.data?.error || 'Could not get a response. Please try again.' }])
+      }
     } catch (err) {
-      const msg = err.response?.data?.error || err.message || ''
-      const isTimeout = err.code === 'ECONNABORTED' || msg.includes('timeout')
-      setChatMessages(prev => [...prev, {
-        role: 'ai',
-        text: isTimeout
-          ? 'AI service is waking up from sleep. Please try again in 30 seconds.'
-          : 'AI service is temporarily unavailable. Please try again shortly.'
-      }])
+      const sleeping = err.response?.data?.sleeping
+      if (sleeping) {
+        setPendingMsg(msg)
+        setAiSleeping(true)
+      } else {
+        setChatMessages(prev => [...prev, { role: 'ai', text: 'Something went wrong. Please try again.' }])
+      }
     }
     setChatLoading(false)
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
+  }
+
+  function handleAiReady() {
+    setAiSleeping(false)
+    if (pendingMsg) {
+      setChatInput(pendingMsg)
+      setPendingMsg('')
+      setTimeout(() => sendChat(), 100)
+    }
   }
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const _h = new Date().getHours()
@@ -301,6 +320,14 @@ function Dashboard() {
                 borderRadius: '12px', padding: '10px 14px', maxWidth: '80%',
               }}>
                 <AIThinking mode="chat" />
+              </div>
+            )}
+            {aiSleeping && !chatLoading && (
+              <div style={{
+                background: 'var(--bg)', border: '1px solid rgba(245,158,11,0.3)',
+                borderRadius: '12px', maxWidth: '88%',
+              }}>
+                <WakeUpAI compact onReady={handleAiReady} />
               </div>
             )}
             <div ref={chatEndRef} />

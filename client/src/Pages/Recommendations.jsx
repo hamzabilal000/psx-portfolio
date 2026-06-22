@@ -4,22 +4,28 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import api from '../api'
 import Layout from '../components/Layout'
 import AIThinking from '../components/AIThinking'
+import WakeUpAI from '../components/WakeUpAI'
 
 let COLORS = ['#b9ff66', '#60a5fa', '#f59e0b', '#a78bfa', '#fb7185', '#34d399']
 
 function Recommendations() {
   let [rec, setRec] = useState(null)
-  let [loading, setLoading] = useState(false)
-  let [error, setError] = useState('')
+  let [loading, setLoading]   = useState(false)
+  let [error, setError]       = useState('')
+  let [sleeping, setSleeping] = useState(false)
   let navigate = useNavigate()
 
   async function fetchRecommendations() {
-    setError(''); setLoading(true)
+    setError(''); setLoading(true); setSleeping(false)
     try {
       let res = await api.get('/ai')
       if (res.data.success == true) setRec(res.data.data)
-      else setError(res.data.error)
-    } catch (e) { setError(e.response?.data?.error || 'Failed to get recommendations') }
+      else if (res.data.sleeping) setSleeping(true)
+      else setError(res.data.error || 'Failed to get recommendations')
+    } catch (e) {
+      if (e.response?.data?.sleeping) setSleeping(true)
+      else setError(e.response?.data?.error || 'Failed to get recommendations')
+    }
     setLoading(false)
   }
 
@@ -53,6 +59,7 @@ function Recommendations() {
       )}
 
       {loading && <AIThinking mode="full" label="AI is building your portfolio" />}
+      {sleeping && !loading && <WakeUpAI onReady={() => { setSleeping(false); fetchRecommendations() }} />}
 
       {rec && !loading && (
         <>

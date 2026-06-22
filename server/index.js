@@ -18,6 +18,7 @@ const { news_router } = require("./routes/news.route")
 const { admin_router } = require("./routes/admin.route")
 const { gemini_router } = require("./routes/gemini.route")
 const { startScheduler } = require("./utils/priceScheduler")
+const axios = require("axios")
 
 let app = express()
 
@@ -48,6 +49,7 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/psx-portfol
     .then(() => {
         console.log("MongoDB Connected")
         startScheduler()
+        startKeepAlive()
     })
     .catch(err => console.error("DB Connection Error:", err))
 
@@ -63,6 +65,20 @@ app.use('/ai', recommendation_router)
 app.use('/news', news_router)
 app.use('/admin', admin_router)
 app.use('/gemini', gemini_router)
+
+// Keep the Python AI service awake on Render free tier (sleeps after 15 min inactivity)
+function startKeepAlive() {
+    const aiUrl = process.env.AI_SERVICE_URL
+    if (!aiUrl) return
+    setInterval(async () => {
+        try {
+            await axios.get(`${aiUrl}/health`, { timeout: 20000 })
+            console.log('[KeepAlive] AI service pinged OK')
+        } catch (e) {
+            console.log('[KeepAlive] AI service unreachable (may be waking up):', e.code || e.message)
+        }
+    }, 13 * 60 * 1000)  // every 13 minutes
+}
 
 app.get('/health', (req, res) => res.json({ success: true, data: { status: 'ok', time: new Date() } }))
 
