@@ -12,7 +12,7 @@ def _available() -> bool:
 
 def _call(prompt: str) -> str:
     if not _available():
-        raise RuntimeError("GEMINI_API_KEY not set. Add your Groq key to ai-service/.env")
+        raise RuntimeError("AI service is not configured. GEMINI_API_KEY missing.")
     response = _client.chat.completions.create(
         model=_MODEL,
         messages=[{"role": "user", "content": prompt}],

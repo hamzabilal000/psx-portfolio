@@ -1,6 +1,12 @@
 from dotenv import load_dotenv
 load_dotenv()  # must be first — loads ai-service/.env before any os.getenv() calls
 
+import os, logging
+if not os.getenv("GEMINI_API_KEY"):
+    logging.critical("GEMINI_API_KEY is not set — AI features (chat, compare, analysis) will fail. Set it in Render Environment Variables.")
+else:
+    logging.info("GEMINI_API_KEY loaded OK — AI features enabled.")
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
