@@ -69,6 +69,9 @@ function StockCompare() {
           </button>
         </div>
         {error && <div className="alert-error" style={{ marginTop: '12px' }}><span>⚠</span> {error}</div>}
+        <p style={{ color: 'var(--muted)', fontSize: '11px', marginTop: '10px', marginBottom: 0 }}>
+          Available symbols: MEBL, HBL, UBL, MCB, ENGRO, LUCK, OGDC, PPL, PSO, TRG, SYS, FFC, SEARL, NESTLE, PTCL, INDU and more.
+        </p>
       </div>
 
       {stocks.length >= 2 && (

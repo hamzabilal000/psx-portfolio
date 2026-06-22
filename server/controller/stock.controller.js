@@ -73,7 +73,15 @@ async function compareStocks(req, res) {
         if (!symbols) return res.status(400).json({ success: false, error: "symbols query required (e.g. ?symbols=MEBL,HBL)" })
 
         let symbolArr = symbols.split(',').map(s => s.trim().toUpperCase()).slice(0, 4)
+        if (symbolArr.length < 2) return res.status(400).json({ success: false, error: "Provide at least 2 symbols to compare" })
+
         let stocks = await Stock.find({ symbol: { $in: symbolArr } })
+        let foundSymbols = stocks.map(s => s.symbol)
+        let notFound = symbolArr.filter(s => !foundSymbols.includes(s))
+        if (notFound.length > 0) {
+            return res.status(404).json({ success: false, error: `Symbol${notFound.length > 1 ? 's' : ''} not found in PSX database: ${notFound.join(', ')}` })
+        }
+
         let prices = await StockPrice.find({ symbol: { $in: symbolArr } })
         let priceMap = {}
         prices.forEach(p => { priceMap[p.symbol] = p.price })
