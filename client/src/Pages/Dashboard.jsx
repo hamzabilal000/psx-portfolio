@@ -36,9 +36,9 @@ function Dashboard() {
   const [pendingMsg,    setPendingMsg]    = useState('')
   const chatEndRef = useRef(null)
 
-  async function sendChat(e) {
+  async function sendChat(e, forceMsg) {
     e?.preventDefault()
-    const msg = chatInput.trim()
+    const msg = (forceMsg || chatInput).trim()
     if (!msg || chatLoading) return
     setChatInput('')
     setChatSleeping(false)
@@ -68,12 +68,10 @@ function Dashboard() {
   }
 
   function handleAiReady() {
+    const msg = pendingMsg
     setChatSleeping(false)
-    if (pendingMsg) {
-      setChatInput(pendingMsg)
-      setPendingMsg('')
-      setTimeout(() => sendChat(), 100)
-    }
+    setPendingMsg('')
+    if (msg) sendChat(null, msg)
   }
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const _h = new Date().getHours()
