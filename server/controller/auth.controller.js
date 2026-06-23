@@ -40,23 +40,20 @@ async function register(req, res) {
             isVerified: true  // auto-verify (email disabled for dev)
         })
 
-        // ── Try sending email — if it fails, roll back (delete user) ──
-        try {
-            let verificationToken = generateToken()
-            await User.findByIdAndUpdate(createdUser._id, {
-                emailVerificationToken: verificationToken,
-                emailVerificationExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000)
-            })
-            await sendVerificationEmail(normalizedEmail, name.trim(), verificationToken)
-        } catch (emailErr) {
-            console.log("[Email] Skipped (non-fatal):", emailErr.message)
-            // Email failure is non-fatal — user is still created & verified
-        }
-
+        // Respond immediately — don't block on email sending
         res.status(201).json({
             success: true,
             data: { message: "Registration successful. You can now login." }
         })
+
+        // Fire-and-forget welcome email (never blocks or delays the response)
+        const verificationToken = generateToken()
+        User.findByIdAndUpdate(createdUser._id, {
+            emailVerificationToken: verificationToken,
+            emailVerificationExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000)
+        })
+        .then(() => sendVerificationEmail(normalizedEmail, name.trim(), verificationToken))
+        .catch(e => console.log("[Email] Non-fatal:", e.message))
     } catch (error) {
         console.log("[Register Error]", error)
 
