@@ -1,24 +1,39 @@
 const { Watchlist } = require("../models/watchlist.model")
 const { Stock } = require("../models/stock.model")
 const { StockPrice } = require("../models/stockprice.model")
+const { Transaction } = require("../models/transaction.model")
 
 async function getWatchlist(req, res) {
     try {
         let items = await Watchlist.find({ user: req.user.id })
         let symbols = items.map(i => i.symbol)
-        let stocks = await Stock.find({ symbol: { $in: symbols } })
-        let prices = await StockPrice.find({ symbol: { $in: symbols } })
+
+        const [stocks, prices, txns] = await Promise.all([
+            Stock.find({ symbol: { $in: symbols } }),
+            StockPrice.find({ symbol: { $in: symbols } }),
+            Transaction.find({ user: req.user.id, symbol: { $in: symbols } }).sort({ executedAt: -1 })
+        ])
 
         let priceMap = {}
         prices.forEach(p => { priceMap[p.symbol] = p })
         let stockMap = {}
         stocks.forEach(s => { stockMap[s.symbol] = s })
 
+        // Last buy / sell per symbol (txns already sorted newest-first)
+        let lastBuyMap = {}, lastSellMap = {}
+        txns.forEach(t => {
+            if (t.type === 'BUY'  && !lastBuyMap[t.symbol])  lastBuyMap[t.symbol]  = { price: t.price, date: t.executedAt }
+            if (t.type === 'SELL' && !lastSellMap[t.symbol]) lastSellMap[t.symbol] = { price: t.price, date: t.executedAt }
+        })
+
         let result = items.map(item => ({
             ...item.toObject(),
-            stock: stockMap[item.symbol] || null,
+            stock:        stockMap[item.symbol] || null,
             currentPrice: priceMap[item.symbol]?.price || null,
-            changePct: priceMap[item.symbol]?.changePct || null
+            changePct:    priceMap[item.symbol]?.changePct || null,
+            changeAmt:    priceMap[item.symbol]?.changeAmt || null,
+            lastBuy:      lastBuyMap[item.symbol]  || null,
+            lastSell:     lastSellMap[item.symbol] || null,
         }))
 
         res.json({ success: true, data: result })

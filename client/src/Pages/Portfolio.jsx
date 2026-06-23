@@ -11,9 +11,23 @@ function Portfolio() {
   let [addModal, setAddModal] = useState(false)
   let [error, setError] = useState('')
   let [addLoading, setAddLoading] = useState(false)
-  let symbolRef = useRef()
+
+  // Stock symbol search
+  let [allStocks, setAllStocks]         = useState([])
+  let [symQuery, setSymQuery]           = useState('')
+  let [symSelected, setSymSelected]     = useState(null)
+  let [showSymDrop, setShowSymDrop]     = useState(false)
+  let symDropRef = useRef()
+
   let qtyRef = useRef()
   let priceRef = useRef()
+
+  let symFiltered = symQuery.length >= 1
+    ? allStocks.filter(s =>
+        s.symbol.toLowerCase().includes(symQuery.toLowerCase()) ||
+        s.name.toLowerCase().includes(symQuery.toLowerCase())
+      ).slice(0, 8)
+    : []
 
   async function loadPortfolio() {
     try {
@@ -25,16 +39,33 @@ function Portfolio() {
 
   useEffect(() => { loadPortfolio() }, [])
 
+  // Load stock list once for the symbol dropdown
+  useEffect(() => {
+    api.get('/stocks').then(r => { if (r.data.success) setAllStocks(r.data.data) }).catch(() => {})
+  }, [])
+
+  // Close symbol dropdown on outside click
+  useEffect(() => {
+    function onClickOutside(e) {
+      if (symDropRef.current && !symDropRef.current.contains(e.target)) setShowSymDrop(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [])
+
   async function handleAdd() {
+    const symbol = symSelected?.symbol || symQuery.trim().toUpperCase()
+    if (!symbol) { setError('Please select a stock symbol'); return }
     setError(''); setAddLoading(true)
     try {
       let res = await api.post("/portfolio/holding", {
-        symbol: symbolRef.current.value,
+        symbol,
         quantity: parseFloat(qtyRef.current.value),
         avgBuyPrice: parseFloat(priceRef.current.value)
       })
       if (res.data.success == true) {
         setAddModal(false)
+        setSymQuery(''); setSymSelected(null)
         loadPortfolio()
       } else {
         setError(res.data.error)
@@ -142,22 +173,66 @@ function Portfolio() {
       {/* Add Modal */}
       {addModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }}>
-          <div className="card modal-card" style={{ width: '400px' }}>
+          <div className="card modal-card" style={{ width: '420px' }}>
             <h3 style={{ color: 'var(--white)', marginTop: 0 }}>Add Holding</h3>
             {error && <div className="alert-error" style={{ marginBottom: '12px' }}><span>⚠</span> {error}</div>}
-            {[
-              { ref: symbolRef, label: 'Stock Symbol (e.g. MEBL)', placeholder: 'MEBL', type: 'text' },
-              { ref: qtyRef,    label: 'Quantity',                  placeholder: '100',  type: 'number' },
-              { ref: priceRef,  label: 'Average Buy Price (PKR)',   placeholder: '284',  type: 'number' }
-            ].map(f => (
-              <div key={f.label} style={{ marginBottom: '14px' }}>
-                <label className="field-label">{f.label}</label>
-                <input ref={f.ref} type={f.type} placeholder={f.placeholder} className="input-field" />
-              </div>
-            ))}
+
+            {/* Stock symbol search */}
+            <div style={{ marginBottom: '14px', position: 'relative' }} ref={symDropRef}>
+              <label className="field-label">Stock Symbol</label>
+              <input
+                value={symQuery}
+                onChange={e => { setSymQuery(e.target.value.toUpperCase()); setSymSelected(null); setShowSymDrop(true) }}
+                onFocus={() => setShowSymDrop(true)}
+                placeholder="Search symbol or name… (e.g. MEBL)"
+                className="input-field"
+              />
+              {symSelected && (
+                <div style={{ color: 'var(--muted)', fontSize: '12px', marginTop: '4px' }}>
+                  ✓ {symSelected.name} — {symSelected.sector}
+                </div>
+              )}
+              {showSymDrop && symFiltered.length > 0 && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 400,
+                  background: 'var(--bg-card)', border: '1px solid var(--border)',
+                  borderRadius: '10px', marginTop: '4px', overflow: 'hidden',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                }}>
+                  {symFiltered.map(s => (
+                    <div key={s.symbol}
+                      onMouseDown={() => { setSymSelected(s); setSymQuery(s.symbol); setShowSymDrop(false) }}
+                      style={{
+                        padding: '10px 14px', cursor: 'pointer', display: 'flex',
+                        justifyContent: 'space-between', alignItems: 'center',
+                        borderBottom: '1px solid var(--border)',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <div>
+                        <span style={{ color: 'var(--lime)', fontWeight: 700, fontSize: '13px' }}>{s.symbol}</span>
+                        <span style={{ color: 'var(--muted)', fontSize: '12px', marginLeft: '8px' }}>{s.name}</span>
+                      </div>
+                      <span className="chip" style={{ fontSize: '10px' }}>{s.sector}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={{ marginBottom: '14px' }}>
+              <label className="field-label">Quantity</label>
+              <input ref={qtyRef} type="number" placeholder="100" className="input-field" />
+            </div>
+            <div style={{ marginBottom: '14px' }}>
+              <label className="field-label">Average Buy Price (PKR)</label>
+              <input ref={priceRef} type="number" placeholder="284" className="input-field" />
+            </div>
+
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={handleAdd} disabled={addLoading} className="btn-primary" style={{ flex: 1 }}>{addLoading ? 'Adding...' : 'Add'}</button>
-              <button onClick={() => setAddModal(false)} className="btn-outline" style={{ flex: 1 }}>Cancel</button>
+              <button onClick={() => { setAddModal(false); setSymQuery(''); setSymSelected(null) }} className="btn-outline" style={{ flex: 1 }}>Cancel</button>
             </div>
           </div>
         </div>

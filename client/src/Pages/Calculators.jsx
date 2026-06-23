@@ -5,10 +5,29 @@ import Layout from '../components/Layout'
 
 let tools = ['CAGR', 'ROI', 'Future Value', 'Dividend', 'Goal', 'Real Return', 'Sharpe']
 
+// Keys that represent percentages so we can display them with %
+const PCT_KEYS = new Set([
+  'cagrPct', 'roiPct', 'realReturnPct', 'sharpeRatio',
+  'nominalReturnPct', 'inflationPct', 'annualReturnPct',
+  'yieldPct', 'growthRatePct',
+])
+// Keys that are multipliers
+const MULT_KEYS = new Set(['growthMultiple'])
+
+function fmtValue(key, val) {
+  if (typeof val !== 'number') return val
+  if (PCT_KEYS.has(key))  return `${val}%`
+  if (MULT_KEYS.has(key)) return `${val}x`
+  if (val > 999)          return `PKR ${val.toLocaleString()}`
+  return val
+}
+
 function Calculators() {
   let [active, setActive] = useState('CAGR')
   let [result, setResult] = useState(null)
   let [error, setError] = useState('')
+  let [calculating, setCalculating] = useState(false)
+  let [slowWarn, setSlowWarn] = useState(false)
 
   let initRef = useRef(), finalRef = useRef(), yearsRef = useRef()
   let investRef = useRef(), currValRef = useRef()
@@ -19,7 +38,9 @@ function Calculators() {
   let portRetRef = useRef(), rfRef = useRef(), stdRef = useRef()
 
   async function calculate() {
-    setError(''); setResult(null)
+    if (calculating) return
+    setError(''); setResult(null); setCalculating(true); setSlowWarn(false)
+    const slowTimer = setTimeout(() => setSlowWarn(true), 6000)
     let url, body
     try {
       if (active === 'CAGR') {
@@ -39,8 +60,10 @@ function Calculators() {
       }
       let res = await api.post(`/calc${url}`, body)
       if (res.data.success == true) setResult(res.data.data)
-      else setError(res.data.error)
-    } catch { setError('Calculation failed') }
+      else setError(res.data.error || 'Invalid inputs')
+    } catch { setError('Server unreachable — please try again') }
+    clearTimeout(slowTimer)
+    setCalculating(false); setSlowWarn(false)
   }
 
   // eslint-disable-next-line react/display-name
@@ -87,8 +110,15 @@ function Calculators() {
           {active === 'Sharpe'       && <><Input ref={portRetRef}    label="Portfolio Return (%)"        placeholder="22"     /><Input ref={rfRef}         label="Risk-Free Rate (%) — T-bill ~22%" placeholder="22"  /><Input ref={stdRef}        label="Portfolio Std Dev (%)"       placeholder="15"     /></>}
 
           {error && <div className="alert-error" style={{ marginBottom: '12px' }}><span>⚠</span> {error}</div>}
+          {slowWarn && (
+            <div style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid var(--warn)', borderRadius: '8px', padding: '10px 14px', marginBottom: '12px', color: 'var(--warn)', fontSize: '13px' }}>
+              ⏳ Server is warming up, please wait…
+            </div>
+          )}
 
-          <button onClick={calculate} className="btn-primary" style={{ width: '100%', marginTop: '4px' }}>Calculate</button>
+          <button onClick={calculate} disabled={calculating} className="btn-primary" style={{ width: '100%', marginTop: '4px', opacity: calculating ? 0.7 : 1 }}>
+            {calculating ? '⌛ Calculating…' : 'Calculate'}
+          </button>
         </div>
 
         {/* Result */}
@@ -103,7 +133,7 @@ function Calculators() {
                       {key.replace(/([A-Z])/g, ' $1').trim()}
                     </div>
                     <div style={{ color: 'var(--lime)', fontSize: '20px', fontWeight: 700 }}>
-                      {typeof val === 'number' ? (val > 1000 ? `PKR ${val.toLocaleString()}` : `${val}`) : val}
+                      {fmtValue(key, val)}
                     </div>
                   </div>
                 ))}

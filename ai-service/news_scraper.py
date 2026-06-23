@@ -1,46 +1,39 @@
 import feedparser
-import time
+import re
 from datetime import datetime, timezone
 
 RSS_FEEDS = [
-    {
-        "name": "Dawn Business",
-        "url": "https://www.dawn.com/feeds/business-finance",
-        "category": "Business"
-    },
-    {
-        "name": "Business Recorder",
-        "url": "https://www.brecorder.com/feed",
-        "category": "Finance"
-    },
-    {
-        "name": "The News Business",
-        "url": "https://www.thenews.com.pk/rss/business/1",
-        "category": "Business"
-    },
-    {
-        "name": "Geo Business",
-        "url": "https://www.geo.tv/rss/10",
-        "category": "Finance"
-    },
-    {
-        "name": "ARY Business",
-        "url": "https://arynews.tv/feed/",
-        "category": "Business"
-    },
+    # ── Pakistani Business / Finance ────────────────────────────────────────
+    {"name": "Business Recorder",     "url": "https://www.brecorder.com/feed",                        "intl": False},
+    {"name": "Dawn Business",         "url": "https://www.dawn.com/feeds/business-finance",           "intl": False},
+    {"name": "The News Business",     "url": "https://www.thenews.com.pk/rss/business/1",             "intl": False},
+    {"name": "Express Tribune Biz",   "url": "https://tribune.com.pk/feed/business",                  "intl": False},
+    {"name": "Profit Pakistan Today", "url": "https://profit.pakistantoday.com.pk/feed/",             "intl": False},
+    {"name": "Geo Business",          "url": "https://www.geo.tv/rss/10",                             "intl": False},
+    # ── International ───────────────────────────────────────────────────────
+    {"name": "Reuters Business",      "url": "https://feeds.reuters.com/reuters/businessNews",        "intl": True},
+    {"name": "Reuters Markets",       "url": "https://feeds.reuters.com/reuters/marketsNews",         "intl": True},
+    {"name": "CNBC Markets",          "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",  "intl": True},
+    {"name": "Investing.com",         "url": "https://www.investing.com/rss/news_301.rss",            "intl": True},
 ]
 
-# PSX-related keywords for filtering
 PSX_KEYWORDS = [
-    "PSX", "KSE", "stock", "shares", "dividend", "earnings", "profit",
-    "karachi stock", "pakistan stock", "equity", "investment", "SECP",
-    "listed company", "IPO", "SBP", "State Bank", "inflation", "interest rate",
-    "GDP", "economy", "fiscal", "budget", "revenue", "exports", "imports"
+    "PSX", "KSE", "stock", "shares", "dividend", "earnings", "profit", "loss",
+    "karachi stock", "pakistan stock", "equity", "investment", "SECP", "SBP",
+    "listed company", "IPO", "State Bank", "inflation", "interest rate",
+    "GDP", "economy", "fiscal", "budget", "revenue", "exports", "imports",
+    "rupee", "PKR", "USD", "oil", "commodity", "emerging market", "Asia",
+    "wheat", "fertilizer", "cement", "banking", "telecom", "energy",
+]
+
+INTL_FILTER_KEYWORDS = [
+    "pakistan", "PSX", "KSE", "rupee", "emerging market", "asia pacific",
+    "oil price", "commodity", "crude", "interest rate", "fed", "inflation",
+    "global market", "stock market", "equity market", "bonds",
 ]
 
 
 def _parse_date(entry) -> str:
-    """Extract and normalise publish date from a feedparser entry."""
     if hasattr(entry, "published_parsed") and entry.published_parsed:
         try:
             dt = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
@@ -50,38 +43,52 @@ def _parse_date(entry) -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def _is_relevant(text: str, symbol: str = None) -> bool:
-    """Return True if article is relevant to PSX / the given symbol."""
-    text_lower = text.lower()
-    if symbol:
-        return symbol.lower() in text_lower
-    return any(kw.lower() in text_lower for kw in PSX_KEYWORDS)
+def _clean(text: str) -> str:
+    return re.sub(r"<[^>]+>", "", text or "").strip()
 
 
-def fetch_news(symbol: str = None, max_articles: int = 20) -> list:
+def _is_psx_relevant(text: str) -> bool:
+    t = text.lower()
+    return any(kw.lower() in t for kw in PSX_KEYWORDS)
+
+
+def _is_intl_relevant(text: str) -> bool:
+    t = text.lower()
+    return any(kw.lower() in t for kw in INTL_FILTER_KEYWORDS)
+
+
+def fetch_news(symbol: str = None, max_articles: int = 30) -> list:
     """
-    Fetch articles from RSS feeds, optionally filtered by stock symbol.
-    Returns a list of article dicts compatible with the existing news UI.
+    Fetch articles from all RSS feeds, balanced across sources.
+    For symbol search: filter by symbol name.
+    For market news: include all Pakistani feeds + filtered international.
     """
+    per_feed = max(3, max_articles // len(RSS_FEEDS) + 2)
     articles = []
     seen_titles = set()
 
     for feed_meta in RSS_FEEDS:
         try:
             feed = feedparser.parse(feed_meta["url"])
-            for entry in feed.entries[:15]:
-                title = getattr(entry, "title", "").strip()
+            count = 0
+            for entry in feed.entries[:25]:
+                title = _clean(getattr(entry, "title", ""))
                 if not title or title in seen_titles:
                     continue
 
-                description = getattr(entry, "summary", "") or getattr(entry, "description", "") or ""
-                # Strip basic HTML tags
-                import re
-                description = re.sub(r"<[^>]+>", "", description).strip()[:300]
+                description = _clean(
+                    getattr(entry, "summary", "") or
+                    getattr(entry, "description", "")
+                )[:400]
 
-                # For symbol search, filter by symbol. For market news, accept all articles
-                # (all feeds are already business/finance sources — no need to filter further)
-                if symbol and not _is_relevant(f"{title} {description}", symbol):
+                combined = f"{title} {description}"
+
+                # Symbol search: must mention the symbol
+                if symbol:
+                    if symbol.lower() not in combined.lower():
+                        continue
+                # International feeds: must pass relevance filter
+                elif feed_meta["intl"] and not _is_intl_relevant(combined):
                     continue
 
                 seen_titles.add(title)
@@ -92,18 +99,15 @@ def fetch_news(symbol: str = None, max_articles: int = 20) -> list:
                     "urlToImage":  None,
                     "publishedAt": _parse_date(entry),
                     "source":      {"name": feed_meta["name"], "id": None},
-                    "sentiment":   None,   # filled in by caller if needed
+                    "sentiment":   None,
                 })
-
-                if len(articles) >= max_articles:
+                count += 1
+                if count >= per_feed:
                     break
 
         except Exception as e:
-            print(f"[RSS] Feed {feed_meta['name']} failed: {e}")
+            print(f"[RSS] {feed_meta['name']} failed: {e}", flush=True)
 
-        if len(articles) >= max_articles:
-            break
-
-    # Sort by date descending
+    # Sort newest first, then cap
     articles.sort(key=lambda a: a["publishedAt"], reverse=True)
-    return articles
+    return articles[:max_articles]
