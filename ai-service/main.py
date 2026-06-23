@@ -22,8 +22,26 @@ from risk_analyzer import calculate_portfolio_risk
 from scheduler import fetch_prices
 from news_scraper import fetch_news
 import gemini as gem
+import requests as _req
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = FastAPI(title="PSX AI Service", version="2.0.0")
+
+# ── Mutual keep-alive: ping Node.js every 10 min so it never sleeps ──────────
+# Node.js already pings us every 13 min — together both services stay awake.
+def _ping_node():
+    url = os.getenv("NODE_SERVER_URL")
+    if not url:
+        return
+    try:
+        _req.get(f"{url}/health", timeout=10)
+        print("KeepAlive: Node.js pinged OK", flush=True)
+    except Exception as e:
+        print(f"KeepAlive: Node.js ping failed ({e})", flush=True)
+
+_ka = BackgroundScheduler(daemon=True)
+_ka.add_job(_ping_node, "interval", minutes=10, id="keep_alive")
+_ka.start()
 
 app.add_middleware(
     CORSMiddleware,
